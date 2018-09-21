@@ -34,6 +34,7 @@ void Fill_the_OutputFile(FILE* OutputFile, char** Addresses_of_Strings, int NumS
 //! @param [in] InputFile - from here we take the text
 //! @param [out] OutputFile - here we put sorted text
 //----------------------------------------------------------------------------------------------------------------------
+
 int main() {
     FILE* InputFile = nullptr;
     FILE* OutputFile = nullptr;
@@ -51,8 +52,9 @@ int main() {
 //! @param [arr] Buffer - buffer with the text
 //! @param [arr] Addresses_of_Strings - here there are addresses of strings in buffer
 //----------------------------------------------------------------------------------------------------------------------
+
 void Sorter(FILE* InputFile, FILE* OutputFile) {
-    InputFile = fopen("~/CLionProjects/make_enc/Hamlet.txt", "r");
+    InputFile = fopen("/home/victoroff/CLionProjects/make_enc/Hamlet.txt", "r");
     assert(InputFile != nullptr);
 
     unsigned int NumSymbols = 0;
@@ -89,6 +91,7 @@ void Sorter(FILE* InputFile, FILE* OutputFile) {
 //! Here we check the count of characters and strings:
 //! if everything is fine and their values are greater than 0, the function returns 1, else returns 0 and exit from program.
 //----------------------------------------------------------------------------------------------------------------------
+
 unsigned int Counter_of_Symbols(FILE* InputFile, unsigned int* NumSymbols, unsigned int* NumStrings) {
     int c = 0;
     while ((c = fgetc(InputFile)) != EOF) {
@@ -108,6 +111,7 @@ unsigned int Counter_of_Symbols(FILE* InputFile, unsigned int* NumSymbols, unsig
 //! Buffer\n
 //! Here we just fill the Buffer.
 //----------------------------------------------------------------------------------------------------------------------
+
 void Fill_the_Buffer(FILE* InputFile, char* Buffer, int NumSymbols) {
     for (int i = 0; i < NumSymbols - 1; i++) {
         Buffer[i] = fgetc(InputFile);
@@ -119,15 +123,16 @@ void Fill_the_Buffer(FILE* InputFile, char* Buffer, int NumSymbols) {
 //! Addresses_of_Strings\n
 //! In this function we looking for strings' addresses and put it in the Addresses_of_Strings
 //----------------------------------------------------------------------------------------------------------------------
+
 void Fill_the_Addresses(char* Buffer, char** Addresses_of_Strings, int NumSymbols) {
     int i = 0;
     int j = 0;
-    Addresses_of_Strings[j] = Buffer;
+    Addresses_of_Strings[j] = &Buffer[0];
 
     for (i = 0; i < NumSymbols - 1; i++) {
         if (Buffer[i] == '\n') {
             Buffer[i] = '\0';
-            Addresses_of_Strings[++j] = Buffer + (i + 1);
+            Addresses_of_Strings[++j] = &Buffer[i] + 1;
         }
     }
 }
@@ -137,16 +142,9 @@ void Fill_the_Addresses(char* Buffer, char** Addresses_of_Strings, int NumSymbol
 //! Here the sort our text.
 //! I use simple sort because of problems with implementing faster sorting.
 //----------------------------------------------------------------------------------------------------------------------
+
 void Sort_the_Addresses(char** Addresses_of_Strings, unsigned int NumStrings) {
-    for(int i = 0; i < NumStrings; i++)
-        for(int j = 1; j < NumStrings; j++){
-            if(Comparator(Addresses_of_Strings[j], Addresses_of_Strings[j - 1]) < 0){
-                char* mini_buffer = Addresses_of_Strings[j];
-                Addresses_of_Strings[j] = Addresses_of_Strings[j - 1];
-                Addresses_of_Strings[j - 1] = mini_buffer;
-            }
-        }
-    //qsort(Addresses_of_Strings, NumStrings, sizeof(char*), Comparator);
+    qsort(&Addresses_of_Strings[0], NumStrings, sizeof(*Addresses_of_Strings), Comparator);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -156,19 +154,22 @@ void Sort_the_Addresses(char** Addresses_of_Strings, unsigned int NumStrings) {
 //! @param [str] string1 - first string for compare
 //! @param [str] string2 - second string for compare
 //----------------------------------------------------------------------------------------------------------------------
+
 int Comparator(const void* string1, const void* string2) { //if string1 is less than string2, returns >0
-    return strcmp(((char*) string1), ((char*) string2));
+    return strcmp(*(char* const*) string1, *(char* const*) string2);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Filler_the_OutputFile\n
 //! Simple function for putting sorted text into OutputFile
 //----------------------------------------------------------------------------------------------------------------------
+
 void Fill_the_OutputFile(FILE* OutputFile, char** Addresses_of_Strings, int NumStrings){
     for(int i = 0; i < NumStrings; i++) {
-        if(Comparator(Addresses_of_Strings[i], "\0") != 0) {
+        if(strcmp(Addresses_of_Strings[i], "\0") != 0) {
             fputs(Addresses_of_Strings[i], OutputFile);
             fputc('\n', OutputFile);
         }
     }
 }
+
