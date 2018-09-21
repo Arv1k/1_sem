@@ -52,7 +52,7 @@ int main() {
 //! @param [arr] Addresses_of_Strings - here there are addresses of strings in buffer
 //----------------------------------------------------------------------------------------------------------------------
 void Sorter(FILE* InputFile, FILE* OutputFile) {
-    InputFile = fopen("/home/victoroff/CLionProjects/make_enc/Hamlet.txt", "r");
+    InputFile = fopen("~/CLionProjects/make_enc/Hamlet.txt", "r");
     assert(InputFile != nullptr);
 
     unsigned int NumSymbols = 0;
