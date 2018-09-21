@@ -1,6 +1,7 @@
 //! @file main.cpp
 //----------------------------------------------------------------------------------------------------------------------
-//! This program creates the Encyclopedia of Onegin.
+//! Version 2.0
+//! This program creates the Encyclopedia of any Poem.
 //! I want to add some things later, so will be in touch =)
 //----------------------------------------------------------------------------------------------------------------------
 //! @mainpage
@@ -12,13 +13,6 @@
 #include <cmath>
 #include <cstdlib>
 
-#define MEOW
-#ifdef MEOW
-#define PRINTF printf
-#else
-#define PRINTF
-#endif
-
 void Sorter(FILE* InputFile, FILE* OutputFile);
 unsigned int Counter_of_Symbols(FILE* InputFile, unsigned int* NumSymbols, unsigned int* NumStrings);
 void Fill_the_Buffer(FILE* InputFile, char* Buffer, int NumSymbols);
@@ -29,8 +23,8 @@ void Fill_the_OutputFile(FILE* OutputFile, char** Addresses_of_Strings, int NumS
 
 //----------------------------------------------------------------------------------------------------------------------
 //! main function\n
-//! In this function only two parameters - files.
-//! We use only one function in main.
+//! In this function only two parameters, both of them - files.
+//! We use only one function in main - Sorter.
 //! @param [in] InputFile - from here we take the text
 //! @param [out] OutputFile - here we put sorted text
 //----------------------------------------------------------------------------------------------------------------------
@@ -140,7 +134,7 @@ void Fill_the_Addresses(char* Buffer, char** Addresses_of_Strings, int NumSymbol
 //----------------------------------------------------------------------------------------------------------------------
 //! Sort_the_Addresses\n
 //! Here the sort our text.
-//! I use simple sort because of problems with implementing faster sorting.
+//! V2. I implement quick sort, so it's working better
 //----------------------------------------------------------------------------------------------------------------------
 
 void Sort_the_Addresses(char** Addresses_of_Strings, unsigned int NumStrings) {
