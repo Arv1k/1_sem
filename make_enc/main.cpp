@@ -48,7 +48,7 @@ int main() {
 //----------------------------------------------------------------------------------------------------------------------
 
 void Sorter(FILE* InputFile, FILE* OutputFile) {
-    InputFile = fopen("/home/victoroff/CLionProjects/make_enc/Hamlet.txt", "r");
+    InputFile = fopen("/home/victoroff/Документы/1_sem/make_enc/InputFile.txt", "r");
     assert(InputFile != nullptr);
 
     unsigned int NumSymbols = 0;
@@ -67,7 +67,7 @@ void Sorter(FILE* InputFile, FILE* OutputFile) {
 
     Sort_the_Addresses(Addresses_of_Strings, NumStrings);
 
-    OutputFile = fopen("/home/victoroff/CLionProjects/make_enc/Encyclopedia.txt", "w");
+    OutputFile = fopen("/home/victoroff/Документы/1_sem/make_enc/OutputFile.txt", "w");
     assert(OutputFile != nullptr);
 
     Fill_the_OutputFile(OutputFile, Addresses_of_Strings, NumStrings);
