@@ -1,6 +1,6 @@
 //! @file main.cpp
 //----------------------------------------------------------------------------------------------------------------------
-//! Version 2.0
+//! Version 3.0
 //! This program creates the Encyclopedia of any Poem.
 //! I want to add some things later, so will be in touch =)
 //----------------------------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ int main() {
 //----------------------------------------------------------------------------------------------------------------------
 
 void Sorter(FILE* InputFile, FILE* OutputFile) {
-    InputFile = fopen("/home/victoroff/Документы/1_sem/make_enc/InputFile.txt", "r");
+    InputFile = fopen("InputFile.txt", "r");
     assert(InputFile != nullptr);
 
     unsigned int NumSymbols = 0;
@@ -67,7 +67,7 @@ void Sorter(FILE* InputFile, FILE* OutputFile) {
 
     Sort_the_Addresses(Addresses_of_Strings, NumStrings);
 
-    OutputFile = fopen("/home/victoroff/Документы/1_sem/make_enc/OutputFile.txt", "w");
+    OutputFile = fopen("OutputFile.txt", "w");
     assert(OutputFile != nullptr);
 
     Fill_the_OutputFile(OutputFile, Addresses_of_Strings, NumStrings);
