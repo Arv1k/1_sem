@@ -153,7 +153,7 @@ void Sort_the_Addresses(char** Addresses_of_Strings, unsigned int NumStrings) {
 //----------------------------------------------------------------------------------------------------------------------
 
 int Comparator(const void* string1, const void* string2) { //if string1 is less than string2, returns > 0
-    return strcmp(*(char* const*) string1, *(char* const*) string2);
+    return strcmp(*(char**) string1, *(char**) string2);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
