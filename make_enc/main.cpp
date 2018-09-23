@@ -1,7 +1,9 @@
 //! @file main.cpp
 //----------------------------------------------------------------------------------------------------------------------
 //! Version 3.0
+//!
 //! This program creates the Encyclopedia of any Poem.
+//!
 //! I want to add some things later, so will be in touch =)
 //----------------------------------------------------------------------------------------------------------------------
 //! @mainpage
@@ -22,8 +24,8 @@ int Comparator(const void* string1, const void* string2);
 void Fill_the_OutputFile(FILE* OutputFile, char** Addresses_of_Strings, int NumStrings);
 
 //----------------------------------------------------------------------------------------------------------------------
-//! main function\n
-//! In this function only two parameters, both of them - files.
+//! main function\n\n
+//! In this function only two parameters, both of them - files.\n
 //! We use only one function in main - Sorter.
 //! @param [in] InputFile - from here we take the text
 //! @param [out] OutputFile - here we put sorted text
@@ -38,7 +40,7 @@ int main() {
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Sorter\n
-//! Since the function only read from InputFile and write in OutputFile, its type is void.
+//! Since the function only read from InputFile and write in OutputFile, its type is void.\n
 //! In this variation, we have the buffer (Buffer) with all the text and an array with pointers (Addresses_of_Strings) to the beginning of the strings in this buffer.
 //! Also we have here another functions, so read their descriptions below.
 //! @param [num] NumSymbols - number of symbols in InputFile (used for Buffer)
@@ -58,7 +60,7 @@ void Sorter(FILE* InputFile, FILE* OutputFile) {
         exit(0);
     }
 
-    char* Buffer = (char* ) calloc(NumSymbols, sizeof(*Buffer));
+    char* Buffer = (char*) calloc(NumSymbols, sizeof(*Buffer));
     Fill_the_Buffer(InputFile, Buffer, NumSymbols);
     fclose(InputFile);
 
@@ -81,7 +83,7 @@ void Sorter(FILE* InputFile, FILE* OutputFile) {
 //! Counter_of_Symbols\n
 //! Before we will create the Buffer, we need to know his size.
 //! Also we count number of strings for Addresses_of_Strings.
-//! Before we count the NumSymbols and the NumStrings, we can allocate memory for both of the arrays.
+//! After we count the NumSymbols and the NumStrings, we can allocate memory for both of the arrays.
 //! Here we check the count of characters and strings:
 //! if everything is fine and their values are greater than 0, the function returns 1, else returns 0 and exit from program.
 //----------------------------------------------------------------------------------------------------------------------
@@ -98,7 +100,7 @@ unsigned int Counter_of_Symbols(FILE* InputFile, unsigned int* NumSymbols, unsig
     (*NumStrings)++;
 
     fseek(InputFile, 0, SEEK_SET);
-    return (*NumSymbols <= 0 || *NumStrings <= 0) ? 0 : 1;
+    return (*NumSymbols <= 0 || *NumStrings <= 0)? 0 : 1;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -115,7 +117,7 @@ void Fill_the_Buffer(FILE* InputFile, char* Buffer, int NumSymbols) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Addresses_of_Strings\n
-//! In this function we looking for strings' addresses and put it in the Addresses_of_Strings
+//! In this function we looking for strings' addresses and put it in the Addresses_of_Strings.
 //----------------------------------------------------------------------------------------------------------------------
 
 void Fill_the_Addresses(char* Buffer, char** Addresses_of_Strings, int NumSymbols) {
@@ -133,8 +135,9 @@ void Fill_the_Addresses(char* Buffer, char** Addresses_of_Strings, int NumSymbol
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Sort_the_Addresses\n
-//! Here the sort our text.
-//! V2. I implement quick sort, so it's working better
+//! Here we sort our text.
+//! Version 2.0
+//! I implement quick sort, so it's working better.
 //----------------------------------------------------------------------------------------------------------------------
 
 void Sort_the_Addresses(char** Addresses_of_Strings, unsigned int NumStrings) {
@@ -149,13 +152,13 @@ void Sort_the_Addresses(char** Addresses_of_Strings, unsigned int NumStrings) {
 //! @param [str] string2 - second string for compare
 //----------------------------------------------------------------------------------------------------------------------
 
-int Comparator(const void* string1, const void* string2) { //if string1 is less than string2, returns >0
+int Comparator(const void* string1, const void* string2) { //if string1 is less than string2, returns > 0
     return strcmp(*(char* const*) string1, *(char* const*) string2);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Filler_the_OutputFile\n
-//! Simple function for putting sorted text into OutputFile
+//! Simple function for putting sorted text into OutputFile.
 //----------------------------------------------------------------------------------------------------------------------
 
 void Fill_the_OutputFile(FILE* OutputFile, char** Addresses_of_Strings, int NumStrings){
