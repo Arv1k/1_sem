@@ -116,7 +116,7 @@ char* Fill_the_Buffer(FILE* InputFile, unsigned int* NumStrings) {
 //----------------------------------------------------------------------------------------------------------------------
 
 char** Fill_the_Addresses(char* Buffer, unsigned int NumStrings) {
-    char** Addresses_of_Strings = (char**) calloc(NumStrings, sizeof(*Addresses_of_Strings));
+    char** Addresses_of_Strings = (char**) calloc(NumStrings + 1, sizeof(*Addresses_of_Strings));
 
     Addresses_of_Strings[0] = &Buffer[0];
 
@@ -127,6 +127,7 @@ char** Fill_the_Addresses(char* Buffer, unsigned int NumStrings) {
         i++;
     }
 
+    Addresses_of_Strings[j] = nullptr;
     Buffer[i] = '\0';
     return Addresses_of_Strings;
 }

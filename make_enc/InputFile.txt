@@ -1,6 +1,5 @@
 The Tragedy of Hamlet, Prince of Denmark
-
-Shakespeare
+Shakespeare 
 
 ACT I
 SCENE I. Elsinore. A platform before the castle.
@@ -7883,4 +7882,3 @@ PRINCE FORTINBRAS
     Go, bid the soldiers shoot.
 
     A dead march. Exeunt, bearing off the dead bodies; after which a peal of ordnance is shot off
-
