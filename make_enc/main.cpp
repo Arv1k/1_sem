@@ -46,21 +46,19 @@ void cleanMemory(char** Addresses_of_Strings, char** CP_Addresses_of_Strings);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! main\n\n
-//! Maine gets file names and starts working if all was correctly.
+//! Maine gets files' names and starts working if all was correct.
 //----------------------------------------------------------------------------------------------------------------------
 
 int main(int argc, const char* argv[]) {
-    if ((argc > 2) && (argc < 4))  Sorter(argv[1], argv[2]);
-    else                           printf("Wrong names of files!\n");
+    if ((argc > 2) && (argc < 4)) Sorter(argv[1], argv[2]);
+    else                          printf("Wrong names of files!\n");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Sorter\n\n
-//! Since the function only read from InputFile and write in OutputFile, its type is void.\n
 //! In this variation, we have the buffer (Buffer) with all the text and an array with pointers (Addresses_of_Strings) to the beginning of the strings in this buffer.
 //! Also we have here another functions, so read their descriptions below.
 //!
-//! @param [num] NumStrings - number of strings in InputFile (used for Addresses_of_Strings)
 //! @param [arr] Buffer - buffer with the text
 //! @param [arr] Addresses_of_Strings - here there are addresses of strings in buffer
 //----------------------------------------------------------------------------------------------------------------------
@@ -70,13 +68,13 @@ void Sorter(const char* nameInput, const char* nameOutput) {
 
     char** CP_Addresses_of_Strings = Addresses_of_Strings;
 
+    Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
+
     Sort_the_Addresses_from_the_end(Addresses_of_Strings);
     Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
 
     Sort_the_Addresses(Addresses_of_Strings);
     Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
-
-    //Fill_the_OutputFile(CP_Addresses_of_Strings, nameOutput);
 
     cleanMemory(Addresses_of_Strings, CP_Addresses_of_Strings);
 }
@@ -91,7 +89,7 @@ char** Fill_the_Addresses(const char* nameInput) {
 
     unsigned int NumStrings = 0;
     char* Buffer = Fill_the_Buffer(nameInput, &NumStrings);
-    
+
     char** Addresses_of_Strings = (char**) calloc(NumStrings + 1, sizeof(*Addresses_of_Strings));
 
     int i = 0, j = 0;
@@ -99,9 +97,9 @@ char** Fill_the_Addresses(const char* nameInput) {
 
     while (Buffer[i] != '\0') {
         if (Buffer[i] == '\n') {
-	    Buffer[i] = '\0';	
+            Buffer[i] = '\0';
             Addresses_of_Strings[++j] = &Buffer[i + 1];
-	}
+        }
         i++;
     }
 
@@ -122,7 +120,7 @@ char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings) {
     PRINTF("# Entered in Fill_the_Buffer func\n");
 
     FILE* InputFile = fopen(nameInput, "r");
-    if (InputFile == nullptr){
+    if (InputFile == nullptr) {
         printf("InputFile is not declared in this scope!");
         exit(0);
     }
@@ -152,7 +150,7 @@ long int Size(FILE* InputFile) {
 
     PRINTF("# Entered in Size func\n");
 
-    long Position = ftell (InputFile);
+    long Position = ftell(InputFile);
 
     fseek(InputFile, 0, SEEK_END);
     long int NumSymbols = ftell(InputFile);
@@ -201,15 +199,18 @@ void Sort_the_Addresses(char** Addresses_of_Strings) {
     unsigned int NumStrings = 0;
     while (Addresses_of_Strings[NumStrings] != nullptr) NumStrings++;
 
-    qsort(&Addresses_of_Strings[0], NumStrings, sizeof(*Addresses_of_Strings), /*Comparator*/[] (const void* string1, const void* string2) {
-                                                                                                    return strcmp(*(char* const*) string1, *(char* const*) string2);
-                                                                                                });
+    qsort(&Addresses_of_Strings[0], NumStrings, sizeof(*Addresses_of_Strings),
+          [](const void *string1, const void *string2) {
+              return strcmp(*(char *const *) string1, *(char *const *) string2);
+          });
 
     PRINTF("# Exit from Sort_the_Addresses\n");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//!
+//! Sort_the_Addresses_from_the_end\n\n
+//! Here we sort our text from the end of words.
+//! So we will find the rhymes.
 //----------------------------------------------------------------------------------------------------------------------
 
 void Sort_the_Addresses_from_the_end(char** Addresses_of_Strings) {
@@ -226,31 +227,30 @@ void Sort_the_Addresses_from_the_end(char** Addresses_of_Strings) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Comparator\n\n
-//! I use in Comparator standard function strcmp().
-//! This is done for further improving the program and for rewriting this function into a more successful version.
+//! Comparator compare strings from their ends.
 //!
 //! @param [str] string1 - first string for compare
 //! @param [str] string2 - second string for compare
 //----------------------------------------------------------------------------------------------------------------------
 
 int Comparator(const void* string1, const void* string2) { //if string1 is less than string2, returns > 0
-    long int len1 = strlen(*(char* const*) string1);
-    long int len2 = strlen(*(char* const*) string2);
+    long int len1 = strlen(*(char *const *) string1);
+    long int len2 = strlen(*(char *const *) string2);
 
     if (len1 > len2) {
-        for(long int i = (len2 - 1); i > 0; i--) {
-            if ((*(char* const*) string2)[i] == (*(char* const*) string1)[i + len1 - len2])     continue;
-            else if ((*(char* const*) string2)[i] < (*(char* const*) string1)[i + len1 - len2]) return 1;
-            else                                                                                return -1;
+        for (long int i = (len2 - 1); i > 0; i--) {
+            if ((*(char *const *) string2)[i] == (*(char *const *) string1)[i + len1 - len2])     continue;
+            else if ((*(char *const *) string2)[i] < (*(char *const *) string1)[i + len1 - len2]) return 1;
+            else                                                                                  return -1;
         }
         return 1;
     }
 
     else {
-        for(long int i = (len1 - 1); i > 0; i--) {
-            if ((*(char* const*) string1)[i] == (*(char* const*) string2)[i + len2 - len1])     continue;
-            else if ((*(char* const*) string1)[i] < (*(char* const*) string2)[i + len2 - len1]) return -1;
-            else                                                                                return 1;
+        for (long int i = (len1 - 1); i > 0; i--) {
+            if ((*(char *const *) string1)[i] == (*(char *const *) string2)[i + len2 - len1])     continue;
+            else if ((*(char *const *) string1)[i] < (*(char *const *) string2)[i + len2 - len1]) return -1;
+            else                                                                                  return 1;
         }
         if (len1 == len2) return 0;
         else              return -1;
@@ -268,18 +268,18 @@ void Fill_the_OutputFile(char** Addresses_of_Strings, const char* nameOutput) {
     PRINTF("# Entered in Fill_the_OutputFile func\n");
 
     FILE* OutputFile = fopen(nameOutput, "a+");
-    if (OutputFile == nullptr){
+    if (OutputFile == nullptr) {
         printf("OutputFile is not declared in this scope!");
         exit(0);
     }
 
     int i = 0;
-    while(Addresses_of_Strings[i] != nullptr) {
+    while (Addresses_of_Strings[i] != nullptr) {
         if (*Addresses_of_Strings[i] != '\0') {
             fputs(Addresses_of_Strings[i], OutputFile);
             fputc('\n', OutputFile);
         }
-	    i++;
+        i++;
     }
     fprintf(OutputFile, "\n\n\n\n");
 
@@ -303,5 +303,3 @@ void cleanMemory(char** Addresses_of_Strings, char** CP_Addresses_of_Strings) {
 
     PRINTF("# Exit from cleanMemory\n");
 }
-
-
