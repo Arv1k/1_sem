@@ -70,15 +70,13 @@ void Sorter(const char* nameInput, const char* nameOutput) {
 
     char** CP_Addresses_of_Strings = Addresses_of_Strings;
 
-    PRINTF("\n(ex) %s\n\n", CP_Addresses_of_Strings[12]);
+    Sort_the_Addresses_from_the_end(Addresses_of_Strings);
+    Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
 
     Sort_the_Addresses(Addresses_of_Strings);
     Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
 
-    Sort_the_Addresses_from_the_end(Addresses_of_Strings);
-    Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
-
-    Fill_the_OutputFile(CP_Addresses_of_Strings, nameOutput);
+    //Fill_the_OutputFile(CP_Addresses_of_Strings, nameOutput);
 
     cleanMemory(Addresses_of_Strings, CP_Addresses_of_Strings);
 }
@@ -242,19 +240,20 @@ int Comparator(const void* string1, const void* string2) { //if string1 is less 
     if (len1 > len2) {
         for(long int i = (len2 - 1); i > 0; i--) {
             if ((*(char* const*) string2)[i] == (*(char* const*) string1)[i + len1 - len2])     continue;
-            else if ((*(char* const*) string2)[i] < (*(char* const*) string1)[i + len1 - len2]) return -1;
-            else                                                                                return 1;
+            else if ((*(char* const*) string2)[i] < (*(char* const*) string1)[i + len1 - len2]) return 1;
+            else                                                                                return -1;
         }
-        return -1;
+        return 1;
     }
+
     else {
         for(long int i = (len1 - 1); i > 0; i--) {
             if ((*(char* const*) string1)[i] == (*(char* const*) string2)[i + len2 - len1])     continue;
-            else if ((*(char* const*) string1)[i] < (*(char* const*) string2)[i + len2 - len1]) return 1;
-            else                                                                                return -1;
+            else if ((*(char* const*) string1)[i] < (*(char* const*) string2)[i + len2 - len1]) return -1;
+            else                                                                                return 1;
         }
         if (len1 == len2) return 0;
-        else              return 1;
+        else              return -1;
     }
 }
 
