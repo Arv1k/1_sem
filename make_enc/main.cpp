@@ -17,7 +17,7 @@
 #include <cmath>
 #include <cstdlib>
 
-#define Meow
+//#define Meow
 #ifdef Meow
 #define PRINTF printf
 #else
@@ -66,7 +66,8 @@ int main(int argc, const char* argv[]) {
 void Sorter(const char* nameInput, const char* nameOutput) {
     char** Addresses_of_Strings = Fill_the_Addresses(nameInput);
 
-    char** CP_Addresses_of_Strings = Addresses_of_Strings;
+    char* CP_Addresses_of_Strings[1];
+    CP_Addresses_of_Strings[0] = Addresses_of_Strings[0];
 
     Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
 
@@ -91,6 +92,8 @@ char** Fill_the_Addresses(const char* nameInput) {
     char* Buffer = Fill_the_Buffer(nameInput, &NumStrings);
 
     char** Addresses_of_Strings = (char**) calloc(NumStrings + 1, sizeof(*Addresses_of_Strings));
+
+    PRINTF("%d second calloc\n", &Addresses_of_Strings[0]);
 
     int i = 0, j = 0;
     Addresses_of_Strings[j] = &Buffer[i];
@@ -130,6 +133,8 @@ char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings) {
     char* Buffer = (char*) calloc(NumSymbols + 1, sizeof(*Buffer));
     fread(Buffer, sizeof(*Buffer), NumSymbols, InputFile);
     fclose(InputFile);
+
+    PRINTF("%d, first calloc\n", &Buffer[0]);
 
     Buffer[NumSymbols] = '\0';
 
@@ -297,9 +302,14 @@ void cleanMemory(char** Addresses_of_Strings, char** CP_Addresses_of_Strings) {
 
     //memset(Addresses_of_Strings, 0, func);
     //memset(CP_Addresses_of_Strings, 0, func);
+    
+    PRINTF("first calloc %d cleaned\n", CP_Addresses_of_Strings[0]);
+ 
+    free(CP_Addresses_of_Strings[0]);
+    
+    PRINTF("second calloc %d cleaned\n", Addresses_of_Strings);
 
     free(Addresses_of_Strings);
-    free(CP_Addresses_of_Strings);
 
     PRINTF("# Exit from cleanMemory\n");
 }
