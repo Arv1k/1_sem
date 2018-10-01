@@ -56,11 +56,15 @@ int main(int argc, const char* argv[]) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Sorter\n\n
-//! In this variation, we have the buffer (Buffer) with all the text and an array with pointers (Addresses_of_Strings) to the beginning of the strings in this buffer.
+//! In this variation, we have the buffer (Buffer) with all the text and an array with pointers (Addresses_of_Strings)
+//! to the beginning of the strings in this buffer.
 //! Also we have here another functions, so read their descriptions below.
+//! Also there is CP_Addresses_of_Strings - copy of the 0 element in the Addresses_of_Strings. We need it because we
+//! must clean the memory allocated for Buffer. His location is in another function, but Addresses_of_Strings[0] is 
+//! his first element's address, so that's why we save it.
 //!
-//! @param [arr] Buffer - buffer with the text
 //! @param [arr] Addresses_of_Strings - here there are addresses of strings in buffer
+//! @param [arr] CP_Addresses_of_Strings - Buffer's address
 //----------------------------------------------------------------------------------------------------------------------
 
 void Sorter(const char* nameInput, const char* nameOutput) {
@@ -83,6 +87,7 @@ void Sorter(const char* nameInput, const char* nameOutput) {
 //----------------------------------------------------------------------------------------------------------------------
 //! Addresses_of_Strings\n\n
 //! In this function we looking for strings' addresses and put it in the Addresses_of_Strings.
+//! In the end of Addresses_of_Strings need to be nullptr, because Sorter don't know its size.
 //----------------------------------------------------------------------------------------------------------------------
 
 char** Fill_the_Addresses(const char* nameInput) {
@@ -116,6 +121,7 @@ char** Fill_the_Addresses(const char* nameInput) {
 //----------------------------------------------------------------------------------------------------------------------
 //! Buffer\n\n
 //! Here we just fill the Buffer.
+//! Very imortant to put '\0' in the end of Buffer for working with it.
 //----------------------------------------------------------------------------------------------------------------------
 
 char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings) {
@@ -293,7 +299,7 @@ void Fill_the_OutputFile(char** Addresses_of_Strings, const char* nameOutput) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //! cleanMemory\n\n
-//! Mini-function for function to clear memory.
+//! Mini-function to clear memory.
 //----------------------------------------------------------------------------------------------------------------------
 
 void cleanMemory(char** Addresses_of_Strings, char** CP_Addresses_of_Strings) {
