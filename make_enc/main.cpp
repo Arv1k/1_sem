@@ -1,12 +1,8 @@
 //! @file main.cpp
 //----------------------------------------------------------------------------------------------------------------------
-//! Version 4.0
-//!
 //! This program creates the Encyclopedia of any Poem.
 //!
-//! In version 4.0 improved some things
-//!
-//! Thanks to Vlad Aleinik for the great help!
+//! Thanks to Vlad Aleinik and Ilya Dedinskiy for the great help!
 //----------------------------------------------------------------------------------------------------------------------
 //! @mainpage
 //! - main.cpp
@@ -17,16 +13,26 @@
 #include <cmath>
 #include <cstdlib>
 
-//#define Meow
+#define Meow
 #ifdef Meow
 #define PRINTF printf
 #else
 #define PRINTF
 #endif
 
+//----------------------------------------------------------------------------------------------------------------------
+//! This structure created for our text. Here we have addresses of strings and their length.
+//----------------------------------------------------------------------------------------------------------------------
+
+struct str {
+    char*         String;
+    unsigned long Length;
+};
+
+
 void Sorter(const char* nameInput, const char* nameOutput);
 
-char** Fill_the_Addresses(const char* nameInput);
+str* Fill_the_Addresses(const char* nameInput);
 
 char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings);
 
@@ -34,15 +40,15 @@ long int Size(FILE* InputFile);
 
 unsigned int numberSymbol(const char* Buffer, char Symbol);
 
-void Sort_the_Addresses(char** Addresses_of_Strings);
+void Sort_the_Addresses(str* Addresses);
 
-void Sort_the_Addresses_from_the_end(char** Addresses_of_Strings);
+void Sort_the_Addresses_from_the_end(str* Addresses);
 
 int Comparator(const void* string1, const void* string2);
 
-void Fill_the_OutputFile(char** Addresses_of_Strings, const char* nameOutput);
+void Fill_the_OutputFile(str* Addresses, const char* nameOutput);
 
-void cleanMemory(char** Addresses_of_Strings, char** CP_Addresses_of_Strings);
+void cleanMemory(str* Addresses, char** CP_Addresses_of_Strings);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! main\n\n
@@ -68,20 +74,19 @@ int main(int argc, const char* argv[]) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void Sorter(const char* nameInput, const char* nameOutput) {
-    char** Addresses_of_Strings = Fill_the_Addresses(nameInput);
+    str* Addresses = Fill_the_Addresses(nameInput);
 
-    char* CP_Addresses_of_Strings[1];
-    CP_Addresses_of_Strings[0] = Addresses_of_Strings[0];
+    char* CP_Addresses_of_Strings = Addresses[0].String;
 
-    Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
+    Fill_the_OutputFile(Addresses, nameOutput);
 
-    Sort_the_Addresses_from_the_end(Addresses_of_Strings);
-    Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
+    Sort_the_Addresses_from_the_end(Addresses);
+    Fill_the_OutputFile(Addresses, nameOutput);
 
-    Sort_the_Addresses(Addresses_of_Strings);
-    Fill_the_OutputFile(Addresses_of_Strings, nameOutput);
+    Sort_the_Addresses(Addresses);
+    Fill_the_OutputFile(Addresses, nameOutput);
 
-    cleanMemory(Addresses_of_Strings, CP_Addresses_of_Strings);
+    cleanMemory(Addresses, &CP_Addresses_of_Strings);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -90,32 +95,34 @@ void Sorter(const char* nameInput, const char* nameOutput) {
 //! In the end of Addresses_of_Strings need to be nullptr, because Sorter don't know its size.
 //----------------------------------------------------------------------------------------------------------------------
 
-char** Fill_the_Addresses(const char* nameInput) {
+str* Fill_the_Addresses(const char* nameInput) {
     PRINTF("# Entered in Fill_the_Addresses func\n");
 
     unsigned int NumStrings = 0;
     char* Buffer = Fill_the_Buffer(nameInput, &NumStrings);
 
-    char** Addresses_of_Strings = (char**) calloc(NumStrings + 1, sizeof(*Addresses_of_Strings));
+    str* Addresses = (str*) calloc(NumStrings + 1, sizeof(*Addresses));
 
-    PRINTF("%d second calloc\n", &Addresses_of_Strings[0]);
+    PRINTF("%p second calloc\n", &Addresses[0]);
 
     int i = 0, j = 0;
-    Addresses_of_Strings[j] = &Buffer[i];
+    Addresses[j].String = &Buffer[i];
 
     while (Buffer[i] != '\0') {
         if (Buffer[i] == '\n') {
             Buffer[i] = '\0';
-            Addresses_of_Strings[++j] = &Buffer[i + 1];
+            Addresses[++j].String = &Buffer[i + 1];
+            Addresses[j - 1].Length = Addresses[j].String - Addresses[j - 1].String;
         }
         i++;
     }
+    Addresses[j].Length = &Buffer[i] - Addresses[j - 1].String + 1;
 
-    Addresses_of_Strings[j] = nullptr;
+    Addresses[NumStrings].String = nullptr;
 
     PRINTF("# Exit from Fill_the_Addresses\n");
 
-    return Addresses_of_Strings;
+    return Addresses;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -131,7 +138,7 @@ char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings) {
     FILE* InputFile = fopen(nameInput, "r");
     if (InputFile == nullptr) {
         printf("InputFile is not declared in this scope!");
-        exit(0);
+        return nullptr;
     }
 
     unsigned int NumSymbols = Size(InputFile);
@@ -140,7 +147,7 @@ char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings) {
     fread(Buffer, sizeof(*Buffer), NumSymbols, InputFile);
     fclose(InputFile);
 
-    PRINTF("%d, first calloc\n", &Buffer[0]);
+    PRINTF("%p, first calloc\n", &Buffer[0]);
 
     Buffer[NumSymbols] = '\0';
 
@@ -203,17 +210,18 @@ unsigned int numberSymbol(const char* Buffer, char Symbol) {
 //! I implement quick sort, so it's working better.
 //----------------------------------------------------------------------------------------------------------------------
 
-void Sort_the_Addresses(char** Addresses_of_Strings) {
+void Sort_the_Addresses(str* Addresses) {
 
     PRINTF("# Entered in Sort_the_Addresses func\n");
 
     unsigned int NumStrings = 0;
-    while (Addresses_of_Strings[NumStrings] != nullptr) NumStrings++;
+    while (Addresses[NumStrings].String != nullptr) NumStrings++;
 
-    qsort(&Addresses_of_Strings[0], NumStrings, sizeof(*Addresses_of_Strings),
-          [](const void *string1, const void *string2) {
-              return strcmp(*(char *const *) string1, *(char *const *) string2);
-          });
+    int (*meow)(const void *a, const void *b) = [](const void *string1, const void *string2) {
+        return strcmp((*(str const *) string1).String, (*(str const *) string2).String);
+    };
+
+    qsort(&Addresses[0], NumStrings, sizeof(*Addresses), meow);
 
     PRINTF("# Exit from Sort_the_Addresses\n");
 }
@@ -224,14 +232,14 @@ void Sort_the_Addresses(char** Addresses_of_Strings) {
 //! So we will find the rhymes.
 //----------------------------------------------------------------------------------------------------------------------
 
-void Sort_the_Addresses_from_the_end(char** Addresses_of_Strings) {
+void Sort_the_Addresses_from_the_end(str* Addresses) {
 
     PRINTF("# Entered in Sort_the_Addresses_from_the_end func\n");
 
     unsigned int NumStrings = 0;
-    while (Addresses_of_Strings[NumStrings] != nullptr) NumStrings++;
+    while (Addresses[NumStrings].String != nullptr) NumStrings++;
 
-    qsort(&Addresses_of_Strings[0], NumStrings, sizeof(*Addresses_of_Strings), Comparator);
+    qsort(&Addresses[0], NumStrings, sizeof(*Addresses), Comparator);
 
     PRINTF("# Exit from Sort_the_Addresses_from_the_end\n");
 }
@@ -245,26 +253,26 @@ void Sort_the_Addresses_from_the_end(char** Addresses_of_Strings) {
 //----------------------------------------------------------------------------------------------------------------------
 
 int Comparator(const void* string1, const void* string2) { //if string1 is less than string2, returns > 0
-    long int len1 = strlen(*(char *const *) string1);
-    long int len2 = strlen(*(char *const *) string2);
+    str str1 = *(str const*) string1;
+    str str2 = *(str const*) string2;
 
-    if (len1 > len2) {
-        for (long int i = (len2 - 1); i > 0; i--) {
-            if ((*(char *const *) string2)[i] == (*(char *const *) string1)[i + len1 - len2])     continue;
-            else if ((*(char *const *) string2)[i] < (*(char *const *) string1)[i + len1 - len2]) return 1;
-            else                                                                                  return -1;
+    if (str1.Length > str2.Length) {
+        for (long int i = (str2.Length - 1); i > 0; i--) {
+            if (str2.String[i] == str1.String[i + str1.Length - str2.Length])     continue;
+            else if (str2.String[i] < str1.String[i + str1.Length - str2.Length]) return 1;
+            else                                                                  return -1;
         }
         return 1;
     }
 
     else {
-        for (long int i = (len1 - 1); i > 0; i--) {
-            if ((*(char *const *) string1)[i] == (*(char *const *) string2)[i + len2 - len1])     continue;
-            else if ((*(char *const *) string1)[i] < (*(char *const *) string2)[i + len2 - len1]) return -1;
-            else                                                                                  return 1;
+        for (long int i = (str1.Length - 1); i > 0; i--) {
+            if (str1.String[i] == str2.String[i + str2.Length - str1.Length])     continue;
+            else if (str1.String[i] < str2.String[i + str2.Length - str1.Length]) return -1;
+            else                                                                  return 1;
         }
-        if (len1 == len2) return 0;
-        else              return -1;
+        if (str1.Length == str2.Length) return 0;
+        else                            return -1;
     }
 }
 
@@ -274,7 +282,7 @@ int Comparator(const void* string1, const void* string2) { //if string1 is less 
 //----------------------------------------------------------------------------------------------------------------------
 
 
-void Fill_the_OutputFile(char** Addresses_of_Strings, const char* nameOutput) {
+void Fill_the_OutputFile(str* Addresses, const char* nameOutput) {
 
     PRINTF("# Entered in Fill_the_OutputFile func\n");
 
@@ -285,9 +293,9 @@ void Fill_the_OutputFile(char** Addresses_of_Strings, const char* nameOutput) {
     }
 
     int i = 0;
-    while (Addresses_of_Strings[i] != nullptr) {
-        if (*Addresses_of_Strings[i] != '\0') {
-            fputs(Addresses_of_Strings[i], OutputFile);
+    while (Addresses[i].String != nullptr) {
+        if (*(Addresses[i].String) != '\0') {
+            fputs(Addresses[i].String, OutputFile);
             fputc('\n', OutputFile);
         }
         i++;
@@ -302,20 +310,21 @@ void Fill_the_OutputFile(char** Addresses_of_Strings, const char* nameOutput) {
 //! Mini-function to clear memory.
 //----------------------------------------------------------------------------------------------------------------------
 
-void cleanMemory(char** Addresses_of_Strings, char** CP_Addresses_of_Strings) {
+void cleanMemory(str* Addresses, char** CP_Addresses_of_Strings) {
 
     PRINTF("# Entered in cleanMemory function\n");
 
     //memset(Addresses_of_Strings, 0, func);
     //memset(CP_Addresses_of_Strings, 0, func);
-    
-    PRINTF("first calloc %d cleaned\n", CP_Addresses_of_Strings[0]);
- 
-    free(CP_Addresses_of_Strings[0]);
-    
-    PRINTF("second calloc %d cleaned\n", Addresses_of_Strings);
 
-    free(Addresses_of_Strings);
+    PRINTF("first calloc %p cleaned\n", CP_Addresses_of_Strings[0]);
+
+    free(CP_Addresses_of_Strings[0]);
+
+    PRINTF("second calloc %p cleaned\n", Addresses);
+
+    free(Addresses);
 
     PRINTF("# Exit from cleanMemory\n");
 }
+
