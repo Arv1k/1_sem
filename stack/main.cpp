@@ -1,15 +1,29 @@
-#include <cstdio>
-#include <cassert>
-
-typedef double        data_t;
-typedef unsigned long size_t;
-
-struct Stack {
-    data_t* Data;
-    size_t  Size;
-    size_t  Capacity;
-};
+#include "stack.h"
 
 int main() {
-    
+    size_t check = 0;
+    Stack test1 = {};
+
+    StackCtor(&test1, inSize);
+
+    StackPush(&test1, 5);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+    StackPush(&test1, 6);
+
+    StackClear(&test1);
+
+    StackPop(&test1);
+
+    printf("%lg\n", test1.Data[0]);
+
+    StackDtor(&test1);
 }
+
