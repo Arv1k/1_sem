@@ -5,7 +5,7 @@ int main() {
     size_t check = 0;
     Stack test1 = {};
 
-    StackCtor(&test1, 'c');
+    StackCtor(&test1, 4);
 
     StackPush(&test1, 1);
     StackPush(&test1, 1);

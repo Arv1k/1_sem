@@ -7,6 +7,13 @@
 #include <cstring>
 #include <cmath>
 
+#define assert_stack( check ) {                                                                                                             \
+    if( !(check) ) {                                                                                                                        \
+        printf("Assertion failed! \n %s,\n in: %s,\n function: %s,\n on: %d line.\n ", #check, __FILE__, __PRETTY_FUNCTION__, __LINE__);    \
+        abort();                                                                                                                            \
+    }                                                                                                                                       \
+}                                                                                                                                           \
+
 typedef double data_t;
 
 struct Stack {
@@ -26,6 +33,7 @@ enum STACK_ERRORS {
 };
 
 const size_t inSize = 2;
+const size_t Poison = 110900;
 
 
 size_t StackCtor(Stack* nameStack,size_t capacity = 0);

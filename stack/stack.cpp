@@ -11,8 +11,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 size_t StackCtor(Stack* nameStack, size_t capacity) {
-    assert(nameStack != nullptr);
-    assert(capacity != NAN);
+    assert_stack(nameStack != nullptr);
+    assert_stack(std::isfinite(capacity));
 
     if (capacity == 0) {
         nameStack->Capacity = inSize;
@@ -51,8 +51,8 @@ size_t StackCtor(Stack* nameStack, size_t capacity) {
 //----------------------------------------------------------------------------------------------------------------------
 
 data_t StackPush(Stack* nameStack, data_t variable) {
-    assert(nameStack != nullptr);
-    assert(variable != NAN);
+    assert_stack(nameStack != nullptr);
+    assert_stack(std::isfinite(variable));
 
     if (nameStack->Capacity > nameStack->Size) {
         nameStack->Data[nameStack->Size++] = variable;
@@ -67,7 +67,7 @@ data_t StackPush(Stack* nameStack, data_t variable) {
 
             return STACK_ERROR_PUSH;
         }
-    
+
         nameStack->Data[nameStack->Size++] = variable;
     }
 
@@ -84,7 +84,7 @@ data_t StackPush(Stack* nameStack, data_t variable) {
 //----------------------------------------------------------------------------------------------------------------------
 
 data_t StackPop(Stack* nameStack) {
-    assert(nameStack != nullptr);
+    assert_stack(nameStack != nullptr);
 
     if (nameStack->Size > 0){
         data_t popElem = nameStack->Data[--nameStack->Size];
@@ -124,7 +124,7 @@ data_t StackPop(Stack* nameStack) {
 //----------------------------------------------------------------------------------------------------------------------
 
 data_t StackPeek(Stack* nameStack) {
-    assert(nameStack != nullptr);
+    assert_stack(nameStack != nullptr);
 
     if (nameStack->Size > 0) return nameStack->Data[nameStack->Size - 1];
 
@@ -145,6 +145,8 @@ data_t StackPeek(Stack* nameStack) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void StackClear(Stack* nameStack) {
+    assert_stack(nameStack != nullptr)
+
     memset(nameStack->Data, NAN, nameStack->Capacity);
 
     nameStack->Data = (data_t*) realloc(nameStack->Data, inSize * sizeof(nameStack->Data));
@@ -163,8 +165,8 @@ void StackDtor(Stack* nameStack) {
     memset(nameStack->Data, NAN, nameStack->Capacity);
     free(nameStack->Data);
 
-    nameStack->Size = 0;
-    nameStack->Capacity = 0;
+    nameStack->Size = Poison;
+    nameStack->Capacity = Poison;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -177,5 +179,7 @@ void StackDtor(Stack* nameStack) {
 void StackOK(Stack* nameStack) {
     StackPush(nameStack, 6);
     UNITTEST_1(StackPeek(nameStack), 6.0);
-    UNITTEST_2(StackPop(nameStack));
+
+    UNITTEST_2(StackPop(nameStack), NAN);
+    UNITTEST_3(nameStack);
 }
