@@ -1,28 +1,18 @@
 #include "stack.h"
+#include "UNITTESTS.h"
 
 int main() {
     size_t check = 0;
     Stack test1 = {};
 
-    StackCtor(&test1, inSize);
+    StackCtor(&test1, 'c');
 
-    StackPush(&test1, 5);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-    StackPush(&test1, 6);
-
-    StackClear(&test1);
+    StackPush(&test1, 1);
+    StackPush(&test1, 1);
 
     StackPop(&test1);
 
-    printf("%lg\n", test1.Data[0]);
+    printf("%li",test1.Capacity);
 
     StackDtor(&test1);
 }

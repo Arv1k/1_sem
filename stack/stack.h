@@ -5,14 +5,9 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
+#include <cmath>
 
 typedef double data_t;
-
-#define UNITTEST(what, ref){                                             \
-    if((what) != (ref))                                                  \
-        printf ("FAILED: %s = %d, expected %d\n", #what, (what), (ref)); \
-    else printf("...PASSED...\n");                                       \
-}                                                                        \
 
 struct Stack {
     data_t* Data;
@@ -25,16 +20,15 @@ enum STACK_ERRORS {
     STACK_ERROR_PUSH,
     STACK_ERROR_REALLOC,
     STACK_ERROR_POP,
-    NOTHING_TO_POP,
     NOTHING_TO_PEEK,
     STACK_ERROR_PEEK,
     STACK_ERROR_DTOR
 };
 
-
 const size_t inSize = 2;
 
-void StackCtor(Stack* nameStack, size_t capacity);
+
+size_t StackCtor(Stack* nameStack,size_t capacity = 0);
 
 data_t StackPush(Stack* nameStack, data_t variable);
 
@@ -46,6 +40,6 @@ void StackClear(Stack* nameStack);
 
 void StackDtor(Stack* nameStack);
 
-//size_t StackOK(Stack* nameStack);
+void StackOK(Stack* nameStack);
 
 #endif //STACK_STACK_H
