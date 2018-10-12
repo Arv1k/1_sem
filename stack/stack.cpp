@@ -1,155 +1,131 @@
 #include "stack.h"
-#include "UNITTESTS.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackCtor\n\n
-//! StackCtor function initialise stack (allocates memory, fills stack information like size and capacity).
+//! StackCtor function initialise stack.
 //!
 //! \param nameStack - pointer to stack.
 //! \param capacity - stack capacity.
-//! \return - returns zero if memory allocation failed.
+//! \return - returns 1 if all is well and returns STACK_ERROR_CTOR if can't allocate memory.
 //----------------------------------------------------------------------------------------------------------------------
 
 size_t StackCtor(Stack* nameStack, size_t capacity) {
-    assert_stack(nameStack != nullptr);
-    assert_stack(std::isfinite(capacity));
+    assert_stack(nameStack);
+    assert_var(capacity);
 
     if (capacity == 0) {
-        nameStack->Capacity = inSize;
-        nameStack->Data = (data_t *) calloc(nameStack->Capacity, sizeof(*(nameStack->Data)));
-
-        if (nameStack->Data == nullptr) {
-            printf("ERROR! Can't initialise the Stack! Memory corruption!\n");
-
-            return 0;
-        }
-
+        nameStack->Data = nullptr;
+        nameStack->Capacity = 0;
         nameStack->Size = 0;
     }
 
     else {
-        nameStack->Capacity = capacity;
-        nameStack->Data = (data_t *) calloc(nameStack->Capacity, sizeof(*(nameStack->Data)));
-
-        if (nameStack->Data == nullptr) {
-            printf("ERROR! Can't initialise the Stack! Memory corruption!\n");
-
-            return 0;
-        }
+        size_t check = StackMem(nameStack, capacity);
+        if (check == STACK_ERROR_INIT) return STACK_ERROR_CTOR;
 
         nameStack->Size = 0;
     }
+
+    assert_stack(nameStack);
+    return 1;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackPush\n\n
-//! StackPush function pushes element in stack. If capacity of stack insufficiently, allocate more memory.
+//! StackPush function pushes element in stack.
 //!
 //! \param nameStack - pointer to stack.
 //! \param variable - the variable we want to push in stack.
-//! \return - returns STACK_ERROR_REALLOC if can't allocate new memory and STACK_ERROR_PUSH if something uncommon.
+//! \return - returns 1 if all is well and returns STACK_ERROR_PUSH if something uncommon.
 //----------------------------------------------------------------------------------------------------------------------
 
 data_t StackPush(Stack* nameStack, data_t variable) {
-    assert_stack(nameStack != nullptr);
-    assert_stack(std::isfinite(variable));
+    assert_stack(nameStack);
+    assert_var(variable);
 
-    if (nameStack->Capacity > nameStack->Size) {
-        nameStack->Data[nameStack->Size++] = variable;
+    if(nameStack->Capacity == nameStack->Size) {
+        size_t check = StackPushMemInc(nameStack);
+
+        if (check == STACK_ERROR_PUSH_REALLOC) return STACK_ERROR_PUSH;
     }
 
-    else if (nameStack->Capacity == nameStack->Size) {
-        nameStack->Capacity *= 2;
-        nameStack->Data = (data_t*) realloc(nameStack->Data, nameStack->Capacity * sizeof(nameStack->Data));
+    nameStack->Data[nameStack->Size++] = variable;
 
-        if (nameStack->Data == nullptr) {
-            printf("ERROR! Can't initialise the Stack! Memory corruption!\n");
-
-            return STACK_ERROR_PUSH;
-        }
-
-        nameStack->Data[nameStack->Size++] = variable;
-    }
-
-    else return STACK_ERROR_PUSH;
+    assert_stack(nameStack);
+    return 1;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackPop\n\n
-//! StackPop function pops element from stack. If capacity much more than needed, reallocates less memory.
+//! StackPop function pops element from stack.
 //!
 //! \param nameStack - pointer to stack.
-//! \return - returns element which was popped. If there isn't any element to pop returns NAN,
-//! and returns STACK_ERROR_POP if something uncommon.
+//! \return - returns element which was popped. If there isn't any element to pop returns NAN
+//! and returns STACK_ERROR_POP if can't allocate memory.
 //----------------------------------------------------------------------------------------------------------------------
 
 data_t StackPop(Stack* nameStack) {
-    assert_stack(nameStack != nullptr);
+    assert_stack(nameStack);
 
-    if (nameStack->Size > 0){
-        data_t popElem = nameStack->Data[--nameStack->Size];
-
-        nameStack->Data[nameStack->Size] = NAN;
-
-        if ((nameStack->Size != 0) && (nameStack->Capacity / nameStack->Size) == 4) {
-            nameStack->Capacity /= 2;
-            nameStack->Data = (data_t*) realloc(nameStack->Data, nameStack->Capacity * sizeof(nameStack->Data));
-
-            if (nameStack->Data == nullptr) {
-                printf("ERROR! Can't initialise the Stack! Memory corruption!\n");
-
-                return STACK_ERROR_POP;
-            }
-        }
-
-        return popElem;
-    }
-
-    else if (nameStack->Size == 0)  {
+    if (nameStack->Size == 0) {
         printf("There isn't any element to pop!\n");
 
+        assert_stack(nameStack);
         return NAN;
     }
 
-    else return STACK_ERROR_POP;
+    data_t popElem = nameStack->Data[--nameStack->Size];
+
+    if (nameStack->Capacity == (4 * nameStack->Size)) {
+        size_t check = StackPopMemDec(nameStack);
+
+        if (check == STACK_ERROR_POP_REALLOC) return STACK_ERROR_POP;
+    }
+
+    nameStack->Data[nameStack->Size] = NAN;
+
+    assert_stack(nameStack);
+    return popElem;
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackPeek\n\n
 //! StackPeek function shows the top element.
 
-//! \param nameStack - pointer to stack
+//! \param nameStack - pointer to stack.
 //! \return - returns the top element. If there isn't any element returns NAN,
 //! and returns STACK_ERROR_PEEK if something uncommon.
 //----------------------------------------------------------------------------------------------------------------------
 
 data_t StackPeek(Stack* nameStack) {
-    assert_stack(nameStack != nullptr);
+    assert_stack(nameStack);
 
-    if (nameStack->Size > 0) return nameStack->Data[nameStack->Size - 1];
-
-    else if (nameStack->Size == 0)  {
+    if (nameStack->Size == 0) {
         printf("There isn't any element!\n");
 
+        assert_stack(nameStack);
         return NAN;
     }
 
-    else return STACK_ERROR_PEEK;
+    assert_stack(nameStack);
+    return nameStack->Data[nameStack->Size - 1];
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackClear\n\n
 //! StackClear function clears all stack (memory is filled with nan's).
 //!
-//! \param nameStack - pointer to stack
+//! \param nameStack - pointer to stack.
 //----------------------------------------------------------------------------------------------------------------------
 
 void StackClear(Stack* nameStack) {
-    assert_stack(nameStack != nullptr)
+    assert_stack(nameStack);
 
     memset(nameStack->Data, NAN, nameStack->Capacity);
+    free(nameStack->Data);
 
-    nameStack->Data = (data_t*) realloc(nameStack->Data, inSize * sizeof(nameStack->Data));
+    nameStack->Data = nullptr;
     nameStack->Capacity = 0;
     nameStack->Size = 0;
 }
@@ -158,28 +134,157 @@ void StackClear(Stack* nameStack) {
 //! StackDtor\n\n
 //! Destroy the stack.
 //!
-//! \param nameStack - pointer to stack
+//! \param nameStack - pointer to stack.
 //----------------------------------------------------------------------------------------------------------------------
 
 void StackDtor(Stack* nameStack) {
+    assert_stack(nameStack);
+
     memset(nameStack->Data, NAN, nameStack->Capacity);
     free(nameStack->Data);
 
+    nameStack->Data = nullptr;
     nameStack->Size = Poison;
     nameStack->Capacity = Poison;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//! StackMem\n\n
+//! StackMem function allocates memory for stack.
+//!
+//! \param nameStack - pointer to stack.
+//! \param initialSize - size of initialise for stack.
+//! \return - return STACK_ERROR_INIT if can't allocate memory and 1 if all is well.
+//----------------------------------------------------------------------------------------------------------------------
+
+size_t StackMem(Stack* nameStack, size_t initialSize) {
+    assert_stack(nameStack);
+    assert_var(initialSize);
+
+    nameStack->Capacity = initialSize;
+    nameStack->Data = (data_t *) calloc(nameStack->Capacity, sizeof(*(nameStack->Data)));
+
+    if (nameStack->Data == nullptr) {
+        printf("ERROR! Can't initialise the Stack! Memory corruption!\n");
+
+        return STACK_ERROR_INIT;
+    }
+
+    assert_stack(nameStack);
+    return 1;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//! StackPushMemInc\n\n
+//! StackPushMemInc function allocate new memory if it's needed.
+//!
+//! \param nameStack - pointer to stack.
+//! \return - returns STACK_ERROR_REALLOC if can't allocate memory and 1 if all is well.
+//----------------------------------------------------------------------------------------------------------------------
+
+size_t StackPushMemInc (Stack* nameStack) {
+    assert_stack(nameStack);
+
+    if (nameStack->Capacity == 0) nameStack->Capacity = InSize;
+    else                          nameStack->Capacity *= 2;
+
+    nameStack->Data = (data_t *) realloc(nameStack->Data, nameStack->Capacity * sizeof(nameStack->Data));
+
+    if (nameStack->Data == nullptr) {
+        printf("ERROR! Can't initialise the Stack! Memory corruption!\n");
+
+        return STACK_ERROR_PUSH_REALLOC;
+    }
+
+    memset(nameStack->Data + (nameStack->Size * sizeof(nameStack->Data)), NAN, nameStack->Capacity - nameStack->Size);
+
+    assert_stack(nameStack);
+    return 1;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//! StackPopMemDec\n\n
+//! StackPopMemDec function decrease memory if it's not needed.
+//!
+//! \param nameStack - pointer to stack.
+//! \return - returns STACK_ERROR_REALLOC if can't allocate memory and 1 if all is well.
+//----------------------------------------------------------------------------------------------------------------------
+
+size_t StackPopMemDec(Stack* nameStack) {
+    assert_stack(nameStack);
+
+    nameStack->Capacity /= 2;
+    nameStack->Data = (data_t *) realloc(nameStack->Data, nameStack->Capacity * sizeof(nameStack->Data));
+
+    if (nameStack->Data == nullptr) {
+        printf("ERROR! Can't initialise the Stack! Memory corruption!\n");
+
+        return STACK_ERROR_POP_REALLOC;
+    }
+
+    assert_stack(nameStack);
+    return 1;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackOK\n\n
 //! StackOK function checks stack.
 //!
-//! \param nameStack - pointer to stack
+//! \param nameStack - pointer to stack.
+//! \return - returns 0 if there is something wrong, and 1 if all is well.
 //----------------------------------------------------------------------------------------------------------------------
 
-void StackOK(Stack* nameStack) {
-    StackPush(nameStack, 6);
-    UNITTEST_1(StackPeek(nameStack), 6.0);
+size_t StackOK(Stack* nameStack) {
+    if(nameStack == nullptr)                  return 0;
 
-    UNITTEST_2(StackPop(nameStack), NAN);
-    UNITTEST_3(nameStack);
+    if(nameStack->Capacity < 0)               return 0;
+
+    if(nameStack->Size < 0)                   return 0;
+
+    if(nameStack->Capacity < nameStack->Size) return 0;
+
+
+    return 1;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//! Dump\n\n
+//! Dump function creates DUMP.txt file and writes there information about Stack
+//!
+//! \param nameStack - pointer to stack.
+//----------------------------------------------------------------------------------------------------------------------
+
+size_t Dump(Stack* nameStack) {
+    FILE* Dump = fopen("../DUMP.txt", "w");
+
+    fprintf(Dump ,"#----------------------------------------------------------\n");
+    fprintf(Dump, "# Stack nameStack");
+    fprintf(Dump, " [%p] ", nameStack);
+    if (nameStack == nullptr) fprintf(Dump, "(!!!ERROR!!!) {\n");
+    else                      fprintf(Dump, "{\n");
+
+    fprintf(Dump, "#    capacity = %ld\n", nameStack->Capacity);
+    fprintf(Dump, "#    size = %ld ", nameStack->Size);
+
+    if (nameStack->Capacity < nameStack->Size) fprintf(Dump, " (!!!!!)\n");
+    else                                       fprintf(Dump, "\n");
+
+    if (nameStack->Data != nullptr) {
+        fprintf(Dump, "#    data[%ld] [%p]: {\n", nameStack->Size, nameStack->Data);
+        for (size_t i = 0; i < nameStack->Size; i++) {
+            fprintf(Dump, "#      [%li] = %lg", i, nameStack->Data[i]);
+            if (std::isfinite(nameStack->Data[i])) fprintf(Dump, "\n");
+            else fprintf(Dump, " (!!!!!)\n");
+        }
+        fprintf(Dump, "#    }\n# }\n");
+        fprintf(Dump, "#----------------------------------------------------------\n");
+        fclose(Dump);
+    }
+
+    else {
+        fprintf(Dump, "#    data = nullptr (!!!!!)\n");
+        fprintf(Dump, "# }\n");
+        fprintf(Dump, "#----------------------------------------------------------\n");
+        fclose(Dump);
+    }
 }
