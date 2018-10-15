@@ -8,9 +8,6 @@
 #include <cstring>
 #include <cmath>
 
-static int NumUnittest = 0;
-static int TotalUnittest = 23;
-
 #define assert_stack(nameStack) {\
     if ( !(StackOK(nameStack)) ) {\
         printf("| !!!Assertion failed!!!\n");\
@@ -37,23 +34,24 @@ static int TotalUnittest = 23;
     }\
 }\
 
-#define UNITTEST(what, op, ref) {\
-    printf("UNITTEST_%d\n", (NumUnittest));\
-    data_t result = (what);\
-    (NumUnittest) += 1;\
-    if((result) op (ref)) printf ("...PASSED...\n");\
-    else                  printf("FAILED: %s " #op " %lg, expected %lg\n", #what, (double) (result), (ref));\
-    printf("[%.*s|%.*s]\n\n", (NumUnittest), "|||||||||||||||", ((TotalUnittest) - (NumUnittest)) , "...............");\
-}\
 
 typedef double data_t;
 
+const size_t InSize = 2;
+
+const size_t petuhValue1 = 110900;
+
+const data_t petuhValue2 = 160716;
+
 struct Stack {
-    data_t* Data = {};
-    size_t  Size = 0;
-    size_t  Capacity = 0;
-    size_t* petuh_stack[2] = {};
-    size_t* petuh_data[2] = {};
+    size_t petuh1 = petuhValue1;
+
+    data_t* Data = nullptr;
+    size_t  Size = NAN;
+    size_t  Capacity = NAN;
+    data_t hash_sum = NAN;
+
+    size_t petuh2 = petuhValue1;
 };
 
 enum STACK_ERRORS {
@@ -64,9 +62,6 @@ enum STACK_ERRORS {
     STACK_ERROR_POP = 100101,
     STACK_ERROR_POP_REALLOC = 100110,
 };
-
-const size_t InSize = 2;
-const size_t Poison = 110900;
 
 
 size_t StackCtor(Stack* nameStack,size_t capacity = 0);
@@ -90,6 +85,8 @@ size_t StackPopMemDec(Stack* nameStack);
 size_t StackOK(Stack* nameStack);
 
 size_t Dump(Stack* nameStack);
+
+void unittest(Stack* nameStack);
 
 
 #endif //STACK_STACK_H
