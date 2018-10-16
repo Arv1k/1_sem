@@ -82,8 +82,9 @@ data_t StackPop(Stack* nameStack) {
         return NAN;
     }
 
+    nameStack->hash_sum = ((int) nameStack->hash_sum) >> 1;
     nameStack->hash_sum -= nameStack->Data[nameStack->Size];
-    nameStack->hash_sum = ((int) nameStack->hash_sum) << 1;
+
     data_t popElem = nameStack->Data[nameStack->Size--];
 
     if (nameStack->Capacity == (4 * nameStack->Size)) {
@@ -136,6 +137,7 @@ void StackClear(Stack* nameStack) {
     nameStack->Data[nameStack->Capacity + 1] = NAN;
     memset(nameStack->Data + sizeof(data_t), NAN, nameStack->Capacity);
     free(nameStack->Data);
+    nameStack->hash_sum = 0;
 
     nameStack->Data = nullptr;
     nameStack->Capacity = 0;
@@ -156,6 +158,7 @@ void StackDtor(Stack* nameStack) {
     nameStack->Data[nameStack->Capacity + 1] = NAN;
     memset(nameStack->Data + sizeof(data_t), NAN, nameStack->Capacity);
     free(nameStack->Data);
+    nameStack->hash_sum = NAN;
 
     nameStack->petuh1 = NAN;
 
@@ -268,23 +271,27 @@ size_t StackPopMemDec(Stack* nameStack) {
 //----------------------------------------------------------------------------------------------------------------------
 
 size_t StackOK(Stack* nameStack) {
-    if (nameStack == nullptr)                                                                       return 0;
+    if (nameStack == nullptr)                                                                                  return 0;
 
-    if ((nameStack->petuh1 != petuhValue1) || (nameStack->petuh2 != petuhValue1))                   return 0;
+    if ((nameStack->petuh1 != petuhValue1) || (nameStack->petuh2 != petuhValue1))                              return 0;
 
-    if (nameStack->Capacity < 0)                                                                    return 0;
+    if (nameStack->Capacity < 0)                                                                               return 0;
 
-    if (nameStack->Size < 0)                                                                        return 0;
+    if (nameStack->Size < 0)                                                                                   return 0;
 
-    if (nameStack->Capacity < nameStack->Size)                                                      return 0;
+    if (nameStack->Capacity < nameStack->Size)                                                                 return 0;
 
     if (nameStack->Data != nullptr) {
-        if ((nameStack->Data[0] != petuhValue2) || (nameStack->Data[nameStack->Capacity + 1]) != petuhValue2)   return 0;
-    }
+        if ((nameStack->Data[0] != petuhValue2) || (nameStack->Data[nameStack->Capacity + 1]) != petuhValue2)  return 0;
 
-//    else {
-//        if ((std::isfinite(nameStack->Data[0]) != 0) || (std::isfinite(nameStack->Data[nameStack->Capacity + 1]) != 0)) return 0;
-//    }
+        data_t sum = 0;
+        for (int i = 1; i <= nameStack->Size; i++) {
+            sum += nameStack->Data[i];
+            sum = ((int) sum) << 1;
+        }
+
+        if (sum != nameStack->hash_sum)                                                                        return 0;
+    }
 
     return 1;
 }
