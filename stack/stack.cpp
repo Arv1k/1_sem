@@ -270,7 +270,7 @@ size_t StackPopMemDec(Stack* nameStack) {
 //! \return - returns 0 if there is something wrong, and 1 if all is well.
 //----------------------------------------------------------------------------------------------------------------------
 
-size_t StackOK(Stack* nameStack) {
+bool StackOK(Stack* nameStack) {
     if (nameStack == nullptr)                                                                                  return 0;
 
     if ((nameStack->petuh1 != petuhValue1) || (nameStack->petuh2 != petuhValue1))                              return 0;
@@ -292,6 +292,8 @@ size_t StackOK(Stack* nameStack) {
 
         if (sum != nameStack->hash_sum)                                                                        return 0;
     }
+
+    else if (nameStack->Size > 0)                                                                              return 0;
 
     return 1;
 }

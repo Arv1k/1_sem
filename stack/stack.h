@@ -55,8 +55,8 @@ struct Stack {
 };
 
 enum STACK_ERRORS {
-    STACK_ERROR_INIT = 100001,
     STACK_ERROR_CTOR = 100010,
+    STACK_ERROR_INIT = 0b100001,
     STACK_ERROR_PUSH = 100011,
     STACK_ERROR_PUSH_REALLOC = 100100,
     STACK_ERROR_POP = 100101,
@@ -64,7 +64,7 @@ enum STACK_ERRORS {
 };
 
 
-size_t StackCtor(Stack* nameStack,size_t capacity = 0);
+size_t StackCtor(Stack* nameStack, size_t capacity = 0);
 
 data_t StackPush(Stack* nameStack, data_t variable);
 
@@ -82,7 +82,7 @@ size_t StackPushMemInc (Stack* nameStack);
 
 size_t StackPopMemDec(Stack* nameStack);
 
-size_t StackOK(Stack* nameStack);
+bool StackOK(Stack* nameStack);
 
 size_t Dump(Stack* nameStack);
 
