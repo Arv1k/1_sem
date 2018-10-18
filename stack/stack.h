@@ -43,6 +43,8 @@ const size_t petuhValue1 = 110900;
 
 const data_t petuhValue2 = 160716;
 
+const size_t Poison = 31415;
+
 struct Stack {
     size_t petuh1 = petuhValue1;
 

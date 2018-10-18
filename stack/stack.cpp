@@ -133,13 +133,14 @@ data_t StackPeek(Stack* nameStack) {
 void StackClear(Stack* nameStack) {
     assert_stack(nameStack);
 
-    nameStack->Data[0] = NAN;
-    nameStack->Data[nameStack->Capacity + 1] = NAN;
-    memset(nameStack->Data + sizeof(data_t), NAN, nameStack->Capacity);
-    free(nameStack->Data);
-    nameStack->hash_sum = 0;
+    if (nameStack->Data != nullptr) {
 
-    nameStack->Data = nullptr;
+        memset(nameStack->Data, NAN, nameStack->Capacity + 2);
+        free(nameStack->Data);
+        nameStack->hash_sum = 0;
+        nameStack->Data = nullptr;
+    }
+
     nameStack->Capacity = 0;
     nameStack->Size = 0;
 }
@@ -154,19 +155,19 @@ void StackClear(Stack* nameStack) {
 void StackDtor(Stack* nameStack) {
     assert_stack(nameStack);
 
-    nameStack->Data[0] = NAN;
-    nameStack->Data[nameStack->Capacity + 1] = NAN;
-    memset(nameStack->Data + sizeof(data_t), NAN, nameStack->Capacity);
-    free(nameStack->Data);
-    nameStack->hash_sum = NAN;
+    if (nameStack->Data != nullptr) {
+        memset(nameStack->Data, NAN, nameStack->Capacity + 2);
+        free(nameStack->Data);
+        nameStack->hash_sum = NAN;
+        nameStack->Data = nullptr;
+    }
 
-    nameStack->petuh1 = NAN;
+    nameStack->petuh1 = Poison;
 
-    nameStack->Data = nullptr;
-    nameStack->Capacity = NAN;
-    nameStack->Size = NAN;
+    nameStack->Capacity = Poison;
+    nameStack->Size = Poison;
 
-    nameStack->petuh2 = NAN;
+    nameStack->petuh2 = Poison;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -271,18 +272,20 @@ size_t StackPopMemDec(Stack* nameStack) {
 //----------------------------------------------------------------------------------------------------------------------
 
 bool StackOK(Stack* nameStack) {
-    if (nameStack == nullptr)                                                                                  return 0;
+    if (nameStack == nullptr)                                            return false;
 
-    if ((nameStack->petuh1 != petuhValue1) || (nameStack->petuh2 != petuhValue1))                              return 0;
+    if ( (nameStack->petuh1 != petuhValue1) ||
+         (nameStack->petuh2 != petuhValue1) )                            return false;
 
-    if (nameStack->Capacity < 0)                                                                               return 0;
+    if (nameStack->Capacity < 0)                                         return false;
 
-    if (nameStack->Size < 0)                                                                                   return 0;
+    if (nameStack->Size < 0)                                             return false;
 
-    if (nameStack->Capacity < nameStack->Size)                                                                 return 0;
+    if (nameStack->Capacity < nameStack->Size)                           return false;
 
     if (nameStack->Data != nullptr) {
-        if ((nameStack->Data[0] != petuhValue2) || (nameStack->Data[nameStack->Capacity + 1]) != petuhValue2)  return 0;
+        if ( (nameStack->Data[0] != petuhValue2) ||
+             (nameStack->Data[nameStack->Capacity + 1]) != petuhValue2 ) return false;
 
         data_t sum = 0;
         for (int i = 1; i <= nameStack->Size; i++) {
@@ -290,12 +293,12 @@ bool StackOK(Stack* nameStack) {
             sum = ((int) sum) << 1;
         }
 
-        if (sum != nameStack->hash_sum)                                                                        return 0;
+        if (sum != nameStack->hash_sum)                                  return false;
     }
 
-    else if (nameStack->Size > 0)                                                                              return 0;
+    else if (nameStack->Size > 0)                                        return false;
 
-    return 1;
+    return true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -306,7 +309,7 @@ bool StackOK(Stack* nameStack) {
 //----------------------------------------------------------------------------------------------------------------------
 
 size_t Dump(Stack* nameStack) {
-    FILE *Dump = fopen("../DUMP.txt", "w");
+    FILE *Dump = fopen("../DUMP.txt", "a");
 
     fprintf(Dump, "#----------------------------------------------------------\n");
     fprintf(Dump, "# Stack nameStack");
@@ -322,9 +325,11 @@ size_t Dump(Stack* nameStack) {
 
     if (nameStack->Data != nullptr) {
         fprintf(Dump, "#    data[%ld] [%p]: {\n", nameStack->Size, nameStack->Data);
-        for (size_t i = 1; i < nameStack->Size + 1; i++) {
+        for (size_t i = 0; i < nameStack->Capacity + 2; i++) {
             fprintf(Dump, "#      [%li] = %lg", i, nameStack->Data[i]);
-            if (std::isfinite(nameStack->Data[i])) fprintf(Dump, "\n");
+
+            if (nameStack->Data[i] == petuhValue2) fprintf(Dump, " (petuh)\n");
+            else if (std::isfinite(nameStack->Data[i])) fprintf(Dump, "\n");
             else                                   fprintf(Dump, " (!!!!!)\n");
         }
         fprintf(Dump, "#    }\n# }\n");
@@ -333,7 +338,7 @@ size_t Dump(Stack* nameStack) {
     }
 
     else {
-        fprintf(Dump, "#    data = nullptr (!!!!!)\n");
+        fprintf(Dump, "#    data = nullptr (!!!!!) {\n");
         fprintf(Dump, "# }\n");
         fprintf(Dump, "#----------------------------------------------------------\n");
         fclose(Dump);

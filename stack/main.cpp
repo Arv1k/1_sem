@@ -9,6 +9,9 @@ int main() {
 
     unittest(&test1);
 
+    data_t check1 = 0;
+
+
     StackDtor(&test1);
 }
 
