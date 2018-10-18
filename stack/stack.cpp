@@ -1,5 +1,16 @@
 #include "stack.h"
 
+#define HASH_SUM(what, op, ref) {\
+    if ((op) == 1) {\
+        (what) = ( (what) op (ref) );\
+        (what) = ( ( (int) (what) ) << 1 );\
+    }\
+    else {\
+        (what) = ( ( (int) (what) ) >> 1 );\
+        (what) = ( (what) op (ref) );\
+    }\
+}\
+
 //----------------------------------------------------------------------------------------------------------------------
 //! StackCtor\n\n
 //! StackCtor function initialise stack.
@@ -56,6 +67,7 @@ data_t StackPush(Stack* nameStack, data_t variable) {
 
     nameStack->Data[++nameStack->Size] = variable;
 
+    HASH_SUM(4, 1, 5);
     nameStack->hash_sum += nameStack->Data[nameStack->Size];
     nameStack->hash_sum = ((int) nameStack->hash_sum) << 1;
 
