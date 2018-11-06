@@ -1,5 +1,16 @@
 #include "stack.h"
 
+#define HASH_SUM(what, op, ref) {\
+    if ((#op)[0] == '+') {\
+        (what) = ( (what) op (ref) );\
+        (what) = ( ( (int) (what) ) << 1 );\
+    }\
+    else {\
+        (what) = ( ( (int) (what) ) >> 1 );\
+        (what) = ( (what) op (ref) );\
+    }\
+}\
+
 //----------------------------------------------------------------------------------------------------------------------
 //! StackCtor\n\n
 //! StackCtor function initialise stack.
@@ -56,6 +67,7 @@ data_t StackPush(Stack* nameStack, data_t variable) {
 
     nameStack->Data[++nameStack->Size] = variable;
 
+    //HASH_SUM(nameStack->hash_sum, +, 5);
     nameStack->hash_sum += nameStack->Data[nameStack->Size];
     nameStack->hash_sum = ((int) nameStack->hash_sum) << 1;
 
@@ -133,13 +145,14 @@ data_t StackPeek(Stack* nameStack) {
 void StackClear(Stack* nameStack) {
     assert_stack(nameStack);
 
-    nameStack->Data[0] = NAN;
-    nameStack->Data[nameStack->Capacity + 1] = NAN;
-    memset(nameStack->Data + sizeof(data_t), NAN, nameStack->Capacity);
-    free(nameStack->Data);
-    nameStack->hash_sum = 0;
+    if (nameStack->Data != nullptr) {
 
-    nameStack->Data = nullptr;
+        memset(nameStack->Data, NAN, nameStack->Capacity + 2);
+        free(nameStack->Data);
+        nameStack->hash_sum = 0;
+        nameStack->Data = nullptr;
+    }
+
     nameStack->Capacity = 0;
     nameStack->Size = 0;
 }
@@ -154,19 +167,19 @@ void StackClear(Stack* nameStack) {
 void StackDtor(Stack* nameStack) {
     assert_stack(nameStack);
 
-    nameStack->Data[0] = NAN;
-    nameStack->Data[nameStack->Capacity + 1] = NAN;
-    memset(nameStack->Data + sizeof(data_t), NAN, nameStack->Capacity);
-    free(nameStack->Data);
-    nameStack->hash_sum = NAN;
+    if (nameStack->Data != nullptr) {
+        memset(nameStack->Data, NAN, nameStack->Capacity + 2);
+        free(nameStack->Data);
+        nameStack->hash_sum = NAN;
+        nameStack->Data = nullptr;
+    }
 
-    nameStack->petuh1 = NAN;
+    nameStack->petuh1 = Poison;
 
-    nameStack->Data = nullptr;
-    nameStack->Capacity = NAN;
-    nameStack->Size = NAN;
+    nameStack->Capacity = Poison;
+    nameStack->Size = Poison;
 
-    nameStack->petuh2 = NAN;
+    nameStack->petuh2 = Poison;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -295,7 +308,7 @@ bool StackOK(Stack* nameStack) {
         if (sum != nameStack->hash_sum)                                  return false;
     }
 
-    else if (nameStack->Size > 0)                                        return false;
+    else if (nameStack->Size > 0 && nameStack->Size != Poison)           return false;
 
     return true;
 }
@@ -308,7 +321,7 @@ bool StackOK(Stack* nameStack) {
 //----------------------------------------------------------------------------------------------------------------------
 
 size_t Dump(Stack* nameStack) {
-    FILE *Dump = fopen("../DUMP.txt", "w");
+    FILE *Dump = fopen("../stack_dir/DUMP.txt", "a");
 
     fprintf(Dump, "#----------------------------------------------------------\n");
     fprintf(Dump, "# Stack nameStack");
@@ -324,9 +337,11 @@ size_t Dump(Stack* nameStack) {
 
     if (nameStack->Data != nullptr) {
         fprintf(Dump, "#    data[%ld] [%p]: {\n", nameStack->Size, nameStack->Data);
-        for (size_t i = 1; i < nameStack->Size + 1; i++) {
-            fprintf(Dump, "#      [%li] = %lg", i, nameStack->Data[i]);
-            if (std::isfinite(nameStack->Data[i])) fprintf(Dump, "\n");
+        for (size_t i = 0; i < nameStack->Capacity + 2; i++) {
+            fprintf(Dump, "#      [%li] = %d", i, nameStack->Data[i]);
+
+            if (nameStack->Data[i] == petuhValue2) fprintf(Dump, " (petuh)\n");
+            else if (std::isfinite(nameStack->Data[i])) fprintf(Dump, "\n");
             else                                   fprintf(Dump, " (!!!!!)\n");
         }
         fprintf(Dump, "#    }\n# }\n");
@@ -335,7 +350,7 @@ size_t Dump(Stack* nameStack) {
     }
 
     else {
-        fprintf(Dump, "#    data = nullptr (!!!!!)\n");
+        fprintf(Dump, "#    data = nullptr (!!!!!) {\n");
         fprintf(Dump, "# }\n");
         fprintf(Dump, "#----------------------------------------------------------\n");
         fclose(Dump);

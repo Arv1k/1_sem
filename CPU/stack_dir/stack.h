@@ -35,7 +35,7 @@
 }\
 
 
-typedef double data_t;
+typedef int data_t;
 
 const size_t InSize = 2;
 
@@ -43,13 +43,15 @@ const size_t petuhValue1 = 110900;
 
 const data_t petuhValue2 = 160716;
 
+const size_t Poison = 666;
+
 struct Stack {
     size_t petuh1 = petuhValue1;
 
     data_t* Data = nullptr;
-    size_t  Size = NAN;
-    size_t  Capacity = NAN;
-    data_t hash_sum = NAN;
+    size_t  Size = Poison;
+    size_t  Capacity = Poison;
+    data_t hash_sum = Poison;
 
     size_t petuh2 = petuhValue1;
 };

@@ -7,10 +7,12 @@ int main() {
 
     StackCtor(&test1);
 
-    unittest(&test1);
+    StackPush(&test1, 6);
 
-    data_t check1 = 0;
+    //Dump(&test1);
 
+
+    //unittest(&test1);
 
     StackDtor(&test1);
 }

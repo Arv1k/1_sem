@@ -1,11 +1,11 @@
-#include "CPU.h"
+ #include "CPU.h"
 
-int main() {
-    str* Strings_of_enter = Fill_the_Addresses("/home/victoroff/CLionProjects/CPU/enter.txt");
+int main () {
+    char enter[] = "../enter.txt";
 
-    char command[4];
-    int val;
-    sscanf(Strings_of_enter[0].String, "%s %d", command, &val);
+    assembler(enter);
 
-    printf("%s %d\n", command, val);
+    char asmtext[] = "../asm.txt";
+
+    cpu(asmtext);
 }

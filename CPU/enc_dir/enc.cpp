@@ -58,7 +58,7 @@ str* Fill_the_Addresses(const char* nameInput) {
     }
     Addresses[j].Length = &Buffer[i] - Addresses[j - 1].String + 1;
 
-    Addresses[NumStrings].String = nullptr;
+    Addresses[j + 1].String = nullptr;
 
     PRINTF("# Exit from Fill_the_Addresses\n");
 

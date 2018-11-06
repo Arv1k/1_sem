@@ -1,5 +1,5 @@
-push 1
-push 2
-pop ax
+push 70
+push 70
+mul
 out
 end
