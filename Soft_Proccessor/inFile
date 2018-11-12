@@ -1,0 +1,69 @@
+in
+pop rax
+in
+pop rbx
+in
+pop rcx
+call :5
+end
+
+
+:5
+push rax
+push 0
+jc :0 ; if a == 0
+push rbx
+push rbx
+mul
+push 4
+push rax
+mul
+push rcx
+mul
+sub
+sqrt
+pop rdx
+
+push 0
+push rbx
+sub
+pop rbx
+
+push rbx ; x1
+push rdx
+sub
+push 2
+push rax
+mul
+div
+out
+
+push rbx ; x2
+push rdx
+add
+push 2
+push rax
+mul
+div
+out
+ret :5
+
+
+:0
+push rbx
+push 0
+jc :1 ; if b == 0
+push 0
+push rcx
+sub
+pop rcx
+push rbx
+push rcx
+div
+out
+end
+
+:1
+push 999
+out
+end

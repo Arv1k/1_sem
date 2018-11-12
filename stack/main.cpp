@@ -9,6 +9,8 @@ int main() {
 
     StackPush(&test1, 6);
 
+    printf("%d\n", StackPop(&test1));
+
     //Dump(&test1);
 
 

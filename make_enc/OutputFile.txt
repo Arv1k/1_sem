@@ -1,0 +1,84 @@
+aa vv
+bb gg
+ee oo
+gg tt
+hh yy
+oo cc
+qq yy
+rr hh
+tt aa
+ww uu
+
+
+
+
+tt aa
+oo cc
+bb gg
+rr hh
+ee oo
+gg tt
+ww uu
+aa vv
+hh yy
+qq yy
+
+
+
+
+aa vv
+bb gg
+gg tt
+hh yy
+rr hh
+tt aa
+oo cc
+qq yy
+ww uu
+ee oo
+
+
+
+
+aa vv
+bb gg
+ee oo
+gg tt
+hh yy
+oo cc
+qq yy
+rr hh
+tt aa
+ww uu
+
+
+
+
+tt aa
+oo cc
+bb gg
+rr hh
+ee oo
+gg tt
+ww uu
+aa vv
+hh yy
+qq yy
+
+
+
+
+aa vv
+bb gg
+gg tt
+hh yy
+rr hh
+tt aa
+oo cc
+qq yy
+ww uu
+ee oo
+
+
+
+

@@ -161,7 +161,7 @@ size_t StackPushMemInc (Stack* nameStack) {
         return STACK_ERROR_PUSH_REALLOC;
     }
 
-//    memset( ( nameStack->Data + sizeof(data_t) + (nameStack->Size * sizeof(data_t) ) ),
+//    memset( ( nameStack->Data + sizeof(data_t) + (nameStack->Size * sizeof(data_t)) ),
 //            Poison,
 //            (nameStack->Capacity - nameStack->Size + 1) * sizeof(data_t) );
 

@@ -1,0 +1,31 @@
+push 1
+pop rax
+push 2
+pop rbx
+push 3
+pop rcx
+in
+pop rdx
+call :6
+:5
+push rbx
+out
+end
+
+:6
+push rdx
+push rcx
+jac :5
+push rax
+push rbx
+add
+push rbx
+pop rax
+pop rbx
+push 1 
+push rcx
+add
+pop rcx
+call :6
+ret :6
+

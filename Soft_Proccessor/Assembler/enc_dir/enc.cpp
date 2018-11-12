@@ -22,7 +22,7 @@ str* Fill_the_Addresses(const char* nameInput) {
     unsigned int NumStrings = 0;
     char* Buffer = Fill_the_Buffer(nameInput, &NumStrings);
     
-    str* Addresses = (str*) calloc(NumStrings + 1, sizeof(*Addresses));
+    str* Addresses = (str*) calloc(NumStrings + 2, sizeof(*Addresses));
 
     PRINTF("%p second calloc\n", &Addresses[0]);
 
@@ -38,8 +38,10 @@ str* Fill_the_Addresses(const char* nameInput) {
         i++;
     }
 
-    Addresses[NumStrings].String = nullptr;
-    Addresses[NumStrings].Length = 0;
+    Addresses[j].Length = &Buffer[i] - Addresses[j].String + 1;
+
+    Addresses[NumStrings + 1].String = nullptr;
+    Addresses[NumStrings + 1].Length = 0;
 
     PRINTF("# Exit from Fill_the_Addresses\n");
 
