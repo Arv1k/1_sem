@@ -35,6 +35,8 @@ void cpu(char* bytecode, CPU* processor) {
     int pc = 0;
     int prom = 0;
 
+    std::stack <int> callLabels;
+
     while (bytecode[pc] != CMD_END) {
         switch (bytecode[pc]) {
             case CMD_PUSH:
@@ -332,14 +334,15 @@ void cpu(char* bytecode, CPU* processor) {
             case CMD_CALL:
                 pc += sizeof(char);
 
+                callLabels.push(pc + sizeof(int));
+
                 pc = ((int*) (bytecode + pc)) [0];
 
                 break;
 
             case CMD_RET:
-                pc += sizeof(char);
-
-                pc = ((int*) (bytecode + pc)) [0];
+                pc = callLabels.top();
+                callLabels.pop();
 
                 break;
         }

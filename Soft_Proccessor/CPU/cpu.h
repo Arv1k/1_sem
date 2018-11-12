@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cmath>
+#include <stack>
 #include "stack_dir/stack.h"
 
 

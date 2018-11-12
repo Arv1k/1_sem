@@ -5,14 +5,12 @@ pop rbx
 in
 pop rcx
 call :5
-out
 end
-
 
 :5
 push rax
 push 0
-jc :0 ; if a == 0
+jc :0      ;if a == 0
 push rbx
 push rbx
 mul
@@ -23,14 +21,14 @@ push rcx
 mul
 sub
 sqrt
-pop rdx
+pop rdx    ;discriminant
 
 push 0
 push rbx
 sub
 pop rbx
 
-push rbx ; x1
+push rbx   ;x1
 push rdx
 sub
 push 2
@@ -39,29 +37,28 @@ mul
 div
 out
 
-push rbx ; x2
+push rbx    ;x2
 push rdx
 add
 push 2
 push rax
 mul
 div
-ret :5
-
+out
+:19
+ret
 
 :0
 push rbx
 push 0
-jc :1 ; if b == 0
+jc :1      ;if b == 0
 push 0
 push rcx
 sub
-pop rcx
 push rbx
-push rcx
 div
-ret :5
+jmp :19
 
 :1
 push 999
-ret :5
+jmp :19

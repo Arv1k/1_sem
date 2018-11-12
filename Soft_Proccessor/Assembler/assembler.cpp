@@ -10,11 +10,8 @@ int assembler(const char* inputFile, char* bytecode) {
     int Ded32[numLabels] = {};
     memset(Ded32, yad_label, numLabels * sizeof(int));
 
-    int callLabels[numLabels] = {};
-    memset(callLabels, yad_label, numLabels * sizeof(int));
-
-    parser(text, bytecode, Ded32, callLabels);
-    int pc = parser(text, bytecode, Ded32, callLabels);
+    parser(text, bytecode, Ded32);
+    int pc = parser(text, bytecode, Ded32);
 
     bytecode[pc] = '\0';
 
@@ -42,7 +39,7 @@ void delComments(str* text) {
     assert(text);
 }
 
-int parser(const str* text, char* bytecode, int* Ded32, int* callLabels) {
+int parser(const str* text, char* bytecode, int* Ded32) {
     assert(text);
     assert(bytecode);
     assert(Ded32);
@@ -55,7 +52,7 @@ int parser(const str* text, char* bytecode, int* Ded32, int* callLabels) {
             continue;
         }
 
-        ASM(text[i].String, bytecode, &pc, Ded32, callLabels);
+        ASM(text[i].String, bytecode, &pc, Ded32);
 
         i++;
     }
@@ -67,7 +64,7 @@ int parser(const str* text, char* bytecode, int* Ded32, int* callLabels) {
     return pc;
 }
 
-int ASM(char* str, char* bytecode, int* pc, int* Ded32, int* callLabels) {
+int ASM(char* str, char* bytecode, int* pc, int* Ded32) {
     assert(str);
     assert(bytecode);
     assert(Ded32);
@@ -356,17 +353,11 @@ int ASM(char* str, char* bytecode, int* pc, int* Ded32, int* callLabels) {
 
             *pc += sizeof(int);
 
-            callLabels[var] = *pc;
-
             break;
 
         case CMD_RET:
-            sscanf(str, "%s :%d", com, &var);
             bytecode[*pc] = numCom;
             *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = callLabels[var];
-            *pc += sizeof(int);
 
             break;
 

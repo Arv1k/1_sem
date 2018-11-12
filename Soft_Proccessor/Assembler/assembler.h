@@ -29,9 +29,9 @@ int assembler(const char* inputFile, char* bytecode);
 
 void delComments(str* text);
 
-int parser(const str* text, char* bytecode, int* Ded32, int* callLabels);
+int parser(const str* text, char* bytecode, int* Ded32);
 
-int ASM(char* str, char* bytecode, int* pc, int* Ded32, int* callLabels);
+int ASM(char* str, char* bytecode, int* pc, int* Ded32);
 
 char which_command(char* com);
 

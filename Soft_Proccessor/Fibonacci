@@ -1,13 +1,14 @@
 push 1
 pop rax
-push 2
+push 1
 pop rbx
 push 3
 pop rcx
 in
 pop rdx
+push 1
+pop rbx
 call :6
-:5
 push rbx
 out
 end
@@ -22,10 +23,11 @@ add
 push rbx
 pop rax
 pop rbx
-push 1 
+push 1
 push rcx
 add
 pop rcx
 call :6
-ret :6
+:5
+ret
 
