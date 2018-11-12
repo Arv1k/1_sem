@@ -13,7 +13,7 @@ const char yad_label = -1;
 const int numLabels = 20;
 
 enum commands {
-    #define DEF_CMD(name, num) CMD_##name = num,
+    #define DEF_CMD(name, num, assembler, processor) CMD_##name = num,
     #define DEF_MD(name, num) MD_##name = num,
     #define DEF_REG(name, num) REG_##name = num,
 

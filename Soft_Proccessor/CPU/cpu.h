@@ -10,15 +10,15 @@
 
 
 enum commands {
-    #define DEF_CMD(name, num) CMD_##name = num,
+    #define DEF_CMD(name, num, assembler, processor) CMD_##name = num,
     #define DEF_MD(name, num) MD_##name = num,
     #define DEF_REG(name, num) REG_##name = num,
 
     #include "../commands.h"
 
-    #undef DEF_REG
     #undef DEF_CMD
     #undef DEF_MD
+    #undef DEF_REG
 };
 
 const int operationMem = 32;

@@ -93,278 +93,17 @@ int ASM(char* str, char* bytecode, int* pc, int* Ded32) {
     var = 0;
 
     switch (numCom) {
-        case CMD_PUSH:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
+        #define DEF_CMD(name, num, assembler, processor) case num:{assembler break;}
 
-            sscanf(str, "%s %s", com, reg);
+        #define DEF_MD(name, num)  ;
 
-            if (reg[0] == '[') {
-                if (reg[1] >= '0' && reg[1] <= '9') {
-                    bytecode[*pc] = MD_PUSH_FROM_RAM;
-                    *pc += sizeof(char);
+        #define DEF_REG(name, num) ;
 
-                    sscanf(str, "%s [%d]", com, &var);
+        #include "../commands.h"
 
-                    ((int *) (bytecode + *pc))[0] = var;
-                    *pc += sizeof(int);
-
-                    break;
-                }
-
-                sscanf(str, "%s [%s]", com, reg);
-
-                reg_num = which_reg(reg);
-                if (reg_num == yad) {
-                    printf("Invalid register!\n");
-                    abort(); //change to assert
-                }
-
-                bytecode[*pc] = MD_PUSH_FROM_RAM;
-                *pc += sizeof(char);
-
-                ((int *) (bytecode + *pc))[0] = reg_num;
-                *pc += sizeof(int);
-
-                break;
-            }
-
-            if (reg[0] == 'r') {
-                reg_num = which_reg(reg);
-                if (reg_num == yad) {
-                    printf("Invalid register!\n");
-                    abort(); //change to assert
-                }
-
-                bytecode[*pc] = MD_PUSH_REG;
-                *pc += sizeof(char);
-
-                ((int *) (bytecode + *pc))[0] = reg_num;
-                *pc += sizeof(int);
-
-                break;
-            }
-
-            if (reg[0] >= '0' && reg[0] <= '9') {
-                sscanf(str, "%s %d", com, &var);
-
-                bytecode[*pc] = MD_PUSH_INT;
-                *pc += sizeof(char);
-
-                ((int *) (bytecode + *pc))[0] = var;
-                *pc += sizeof(int);
-
-                break;
-            }
-
-            printf("Invalid line!\n");
-            break;
-
-        case CMD_POP:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            if (sscanf(str, "%s %s", com, reg) == 1) {
-                bytecode[*pc] = MD_POP_FROM;
-                *pc += sizeof(char);
-
-                break;
-            }
-
-            if (reg[0] == '[') {
-                if (reg[1] >= '0' && reg[1] <= '9') {
-                    bytecode[*pc] = MD_POP_IN_RAM;
-                    *pc += sizeof(char);
-
-                    sscanf(str, "%s [%d]", com, &var);
-
-                    ((int *) (bytecode + *pc))[0] = var;
-                    *pc += sizeof(int);
-
-                    break;
-                }
-
-                sscanf(str, "%s [%s]", com, reg);
-
-                reg_num = which_reg(reg);
-                if (reg_num == yad) {
-                    printf("Invalid register!\n");
-                    abort(); //change to assert
-                }
-
-                bytecode[*pc] = MD_POP_IN_RAM_REG;
-                *pc += sizeof(char);
-
-                ((int *) (bytecode + *pc))[0] = reg_num;
-                *pc += sizeof(int);
-
-                break;
-            }
-
-            if (reg[0] == 'r') {
-                reg_num = which_reg(reg);
-                if (reg_num == yad) {
-                    printf("Invalid register!\n");
-                    abort(); //change to assert
-                }
-
-                bytecode[*pc] = MD_POP_IN_REG;
-                *pc += sizeof(char);
-
-                ((int *) (bytecode + *pc))[0] = reg_num;
-                *pc += sizeof(int);
-
-                break;
-            }
-
-            printf("Invalid line!\n");
-            break;
-
-        case CMD_MUL:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_IN:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_ADD:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_DIV:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_SUB:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_OUT:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_END:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_SQRT:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_CAT:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        case CMD_JMP:
-            sscanf(str, "%s :%d", com, &var);
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = Ded32[var];
-            *pc += sizeof(int);
-
-            break;
-
-        case CMD_JA:
-            sscanf(str, "%s :%d", com, &var);
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = Ded32[var];
-            *pc += sizeof(int);
-
-            break;
-
-        case CMD_JB:
-            sscanf(str, "%s :%d", com, &var);
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = Ded32[var];
-            *pc += sizeof(int);
-
-            break;
-
-        case CMD_JC:
-            sscanf(str, "%s :%d", com, &var);
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = Ded32[var];
-            *pc += sizeof(int);
-
-            break;
-
-        case CMD_JAC:
-            sscanf(str, "%s :%d", com, &var);
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = Ded32[var];
-            *pc += sizeof(int);
-
-            break;
-
-        case CMD_JBC:
-            sscanf(str, "%s :%d", com, &var);
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = Ded32[var];
-            *pc += sizeof(int);
-
-            break;
-
-        case CMD_JRC:
-            sscanf(str, "%s :%d", com, &var);
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = Ded32[var];
-            *pc += sizeof(int);
-
-            break;
-
-        case CMD_CALL:
-            sscanf(str, "%s :%d", com, &var);
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            ((int*) (bytecode + *pc)) [0] = Ded32[var];
-
-            *pc += sizeof(int);
-
-            break;
-
-        case CMD_RET:
-            bytecode[*pc] = numCom;
-            *pc += sizeof(char);
-
-            break;
-
-        default:
-            printf("Wrong text!!!\n");
-
-            break;
+        #undef DEF_REG
+        #undef DEF_CMD
+        #undef DEF_MD
     }
 
     assert(str);
@@ -376,8 +115,8 @@ int ASM(char* str, char* bytecode, int* pc, int* Ded32) {
 
 char which_command(char* com) {
     int check = 0;
-    #define DEF_CMD(name, num) check = strcasecmp(com, #name);\
-                               if (check == 0) return num;
+    #define DEF_CMD(name, num, asm_body, proc_body) check = strcasecmp(com, #name);\
+                                                    if (check == 0) return num;
 
     #define DEF_MD(name, num)  ;
 
@@ -399,7 +138,7 @@ int which_reg(char* reg) {
     #define DEF_REG(name, num) check = strcasecmp(reg, #name);\
                                if (check == 0) return num;
 
-    #define DEF_CMD(name, num)  ;
+    #define DEF_CMD(name, num, assembler, processor)  ;
 
     #define DEF_MD(name, num)  ;
 
