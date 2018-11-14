@@ -79,4 +79,5 @@ bool ListOK(list* nameList);
 
 void DumpList(list* nameList);
 
+
 #endif //LIST_POINTER_LIST_P_H

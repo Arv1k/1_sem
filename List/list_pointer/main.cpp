@@ -4,7 +4,7 @@ int main() {
     list myList = {};
     ListCtor(&myList);
 
-    ListPush_front(&myList, 6);
+    list_elem* pos = ListPush_front(&myList, 6);
 
     ListPush_front(&myList, 7);
 
@@ -14,7 +14,9 @@ int main() {
 
     DumpList(&myList);
 
-    ListDtor(&myList);
+    ListInsert_after(&myList, 9 , pos);
 
     DumpList(&myList);
+
+    ListDtor(&myList);
 }

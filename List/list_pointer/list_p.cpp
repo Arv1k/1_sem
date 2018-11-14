@@ -159,6 +159,8 @@ list_elem* ListInsert_before(list* nameList, data_t elem, list_elem* position) {
         return nullptr;
     }
 
+    if (position->Prev == nullptr) return ListPush_front(nameList, elem);
+
     list_elem* element = (list_elem*) calloc(1, sizeof(list_elem));
 
     element->Info = elem;
@@ -190,6 +192,8 @@ list_elem* ListInsert_after(list* nameList, data_t elem, list_elem* position) {
         return nullptr;
     }
 
+    if (position->Next == nullptr) return ListPush_back(nameList, elem);
+
     list_elem* element = (list_elem*) calloc(1, sizeof(list_elem));
 
     element->Info = elem;
@@ -218,6 +222,20 @@ bool ListDelete(list* nameList, list_elem* position) {
 
         assert_list(nameList);
         return false;
+    }
+
+    if (position->Next == nullptr) {
+        ListPop_back(nameList);
+
+        assert_list(nameList);
+        return true;
+    }
+
+    else if (position->Prev == nullptr) {
+        ListPop_front(nameList);
+
+        assert_list(nameList);
+        return true;
     }
 
     (position->Prev)->Next = position->Next;
