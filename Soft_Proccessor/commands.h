@@ -381,10 +381,10 @@ DEF_CMD(JC, 78, {
 
             		((int*) (bytecode + *pc)) [0] = Ded32[var];
             		*pc += sizeof(int);
-				 },
+				},
 
-				 {
-				 	prom = StackPop(&processor->stProc);
+				{
+					prom = StackPop(&processor->stProc);
 	                pc += sizeof(char);
 
 	                if (prom == StackPop(&processor->stProc)) {
@@ -394,7 +394,7 @@ DEF_CMD(JC, 78, {
 	                }
 
 	                pc += sizeof(int);
-				 } ) // N ==
+				} ) // N ==
 
 DEF_CMD(JAC, 79, {
 					sscanf(str, "%s :%d", com, &var);
@@ -469,15 +469,15 @@ DEF_CMD(CALL, 82, {
 
             		((int*) (bytecode + *pc)) [0] = Ded32[var];
             		*pc += sizeof(int);
-				 },
+				  },
 
-				 {
+				  {
 				 	pc += sizeof(char);
 
 	                callLabels.push(pc + sizeof(int));
 
 	                pc = ((int*) (bytecode + pc)) [0];
-				 } ) // R
+				  } ) // R
 
 DEF_CMD(RET, 83, {
 					bytecode[*pc] = numCom;

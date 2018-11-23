@@ -95,7 +95,7 @@ int ASM(char* str, char* bytecode, int* pc, int* Ded32) {
     switch (numCom) {
         #define DEF_CMD(name, num, assembler, processor) case num:{assembler break;}
 
-        #define DEF_MD(name, num)  ;
+        #define DEF_MD(name, num) ;
 
         #define DEF_REG(name, num) ;
 
