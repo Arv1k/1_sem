@@ -21,17 +21,6 @@
     }\
 }
 
-//#define assert_var(variable) {\
-//    if ( !(std::isfinite(variable)) ) {\
-//        printf("| !!!Assertion failed!!!\n");\
-//        printf("|       what: variable error!,\n");\
-//        printf("|       in: %s,\n", __FILE__);\
-//        printf("|       function: %s,\n",  __PRETTY_FUNCTION__);\
-//        printf("|       on: %d line.\n", __LINE__);\
-//        abort();\
-//    }\
-//}
-
 typedef char* data_t;
 
 const int yad_count = 119;
@@ -110,6 +99,21 @@ void TreePrint(tree_elem* position, FILE* enterTree);
 //! \param position
 //----------------------------------------------------------------------------------------------------------------------
 void TreeDoyElems(tree_elem* position);
+
+//----------------------------------------------------------------------------------------------------------------------
+//!
+//! \param position
+//! \param i
+//----------------------------------------------------------------------------------------------------------------------
+void TreeElemsOK(tree_elem* position, int* i);
+
+//----------------------------------------------------------------------------------------------------------------------
+//!
+//! \param nameTree
+//! \param elem
+//! \return
+//----------------------------------------------------------------------------------------------------------------------
+tree_elem* TreeSearch(tree_elem* position, data_t elem);
 
 
 #endif //AKINATOR_1LOVE_TREE_H
