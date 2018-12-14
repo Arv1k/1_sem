@@ -7,6 +7,7 @@
 #include <cmath>
 #include <stack>
 #include "stack_dir/stack.h"
+#include "../DSL.h"
 
 
 enum commands {

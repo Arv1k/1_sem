@@ -1,63 +1,38 @@
 DEF_CMD(PUSH, 65, {
-					bytecode[*pc] = numCom;
-                    *pc += sizeof(char);
-                    
-                    sscanf(str, "%s %s", com, reg);
+					REC(numCom, 'c');
+
+                    ASM_FORMAT("%s %s", com, reg);
                     
                     if (reg[0] == '[') {
                         if (reg[1] >= '0' && reg[1] <= '9') {
-                            bytecode[*pc] = MD_PUSH_FROM_RAM;
-                            *pc += sizeof(char);
+                            REC(MD_PUSH_FROM_RAM, 'c');
                             
-                            sscanf(str, "%s [%d]", com, &var);
-                            
-                            ((int *) (bytecode + *pc))[0] = var;
-                            *pc += sizeof(int);
+                            ASM_FORMAT("%s [%d]", com, &var);
+
+                            REC(var, 'i');
                             
                             break;
                         }
                     
-                        sscanf(str, "%s [%s]", com, reg);
-                        
-                        reg_num = which_reg(reg);
-                        if (reg_num == yad) {
-                            printf("Invalid register!\n");
-                            abort(); //change to assert
-                        }
-                    
-                        bytecode[*pc] = MD_PUSH_FROM_RAM;
-                        *pc += sizeof(char);
-                        
-                        ((int *) (bytecode + *pc))[0] = reg_num;
-                        *pc += sizeof(int);
+                        ASM_FORMAT("%s [%3s]", com, reg);
+
+                        WHICH_REG(MD_PUSH_FROM_RAM_REG);
                         
                         break;
                     }
                     
                     if (reg[0] == 'r') {
-                        reg_num = which_reg(reg);
-                        if (reg_num == yad) {
-                            printf("Invalid register!\n");
-                            abort(); //change to assert
-                        }
-                        
-                        bytecode[*pc] = MD_PUSH_REG;
-                        *pc += sizeof(char);
-                        
-                        ((int *) (bytecode + *pc))[0] = reg_num;
-                        *pc += sizeof(int);
+						WHICH_REG(MD_PUSH_REG);
                         
                         break;
                     }
                         
                     if (reg[0] >= '0' && reg[0] <= '9') {
-                        sscanf(str, "%s %d", com, &var);
-                        
-                        bytecode[*pc] = MD_PUSH_INT;
-                        *pc += sizeof(char);
-                        
-                        ((int *) (bytecode + *pc))[0] = var;
-                        *pc += sizeof(int);
+                        ASM_FORMAT("%s %d", com, &var);
+
+                        REC(MD_PUSH_INT, 'c');
+
+                        REC(var, 'i');
                         
                         break;
                     }
@@ -71,45 +46,40 @@ DEF_CMD(PUSH, 65, {
 
                         switch (bytecode[pc]) {
                             case MD_PUSH_REG:
-                                pc += sizeof(char);
+                             	PC('c');
 
-                                StackPush(&processor->stProc,
-                                           processor->registers[ ((int *) (bytecode + pc)) [0] - 97 ]);
+                                PUUSH(REEG);
 
-                                pc += sizeof(int);
+                                PC('i');
 
                                 break;
 
                             case MD_PUSH_INT:
-                                pc += sizeof(char);
+                                PC('c');
 
-                                StackPush(&processor->stProc,
-                                          ((int *) (bytecode + pc))[0]);
+                                PUUSH(CUR_SHIFT);
 
-                                pc += sizeof(int);
+                                PC('i');
 
                                 break;
 
                             case MD_PUSH_FROM_RAM:
-                                pc += sizeof(char);
+                                PC('c');
 
-                                StackPush(&processor->stProc,
-                                           processor->operation_mem[ ((int *) (bytecode + pc)) [0] ]);
+                                PUUSH(RAAAM(CUR_SHIFT));
 
-                                pc += sizeof(int);
+                                PC('i');
 
                                 sleep(1);
 
                                 break;
 
                             case MD_PUSH_FROM_RAM_REG:
-                                pc += sizeof(char);
+                                PC('c');
 
-                                StackPush(&processor->stProc,
-                                           processor->operation_mem
-                                           [ processor->registers[ ((int *) (bytecode + pc)) [0] - 97 ] ]);
+                                PUUSH(RAAAM(REEG));
 
-                                pc += sizeof(int);
+                                PC('i');
 
                                 sleep(1);
 
@@ -118,58 +88,34 @@ DEF_CMD(PUSH, 65, {
                   } ) // A
 
 DEF_CMD(POP, 66, {
-					bytecode[*pc] = numCom;
-		            *pc += sizeof(char);
+		            REC(numCom, 'c');
 
-		            if (sscanf(str, "%s %s", com, reg) == 1) {
-		                bytecode[*pc] = MD_POP_FROM;
-		                *pc += sizeof(char);
+		            if (ASM_FORMAT("%s %s", com, reg) == 1) {
+		                REC(MD_POP_FROM, 'c');
 
 		                break;
 		            }
 
 		            if (reg[0] == '[') {
 		                if (reg[1] >= '0' && reg[1] <= '9') {
-		                    bytecode[*pc] = MD_POP_IN_RAM;
-		                    *pc += sizeof(char);
+		                    REC(MD_POP_IN_RAM, 'c');
 
-		                    sscanf(str, "%s [%d]", com, &var);
+		                    ASM_FORMAT("%s [%d]", com, &var);
 
-		                    ((int *) (bytecode + *pc))[0] = var;
-		                    *pc += sizeof(int);
+		                    REC(var, 'i');
 
 		                    break;
 		                }
 
-		                sscanf(str, "%s [%s]", com, reg);
+		                ASM_FORMAT("%s [%3s]", com, reg);
 
-		                reg_num = which_reg(reg);
-		                if (reg_num == yad) {
-		                    printf("Invalid register!\n");
-		                    abort(); //change to assert
-		                }
-
-		                bytecode[*pc] = MD_POP_IN_RAM_REG;
-		                *pc += sizeof(char);
-
-		                ((int *) (bytecode + *pc))[0] = reg_num;
-		                *pc += sizeof(int);
+		                WHICH_REG(MD_POP_IN_RAM_REG);
 
 		                break;
 		            }
 
 		            if (reg[0] == 'r') {
-		                reg_num = which_reg(reg);
-		                if (reg_num == yad) {
-		                    printf("Invalid register!\n");
-		                    abort(); //change to assert
-		                }
-
-		                bytecode[*pc] = MD_POP_IN_REG;
-		                *pc += sizeof(char);
-
-		                ((int *) (bytecode + *pc))[0] = reg_num;
-		                *pc += sizeof(int);
+		                WHICH_REG(MD_POP_IN_REG);
 
 		                break;
 		            }
@@ -182,41 +128,40 @@ DEF_CMD(POP, 66, {
 
 	                switch (bytecode[pc]) {
 	                    case MD_POP_FROM:
-	                        pc += sizeof(char);
+	                        PC('c');
 
-	                        StackPop(&processor->stProc);
+	                        POOP();
 
-	                        pc += sizeof(char);
+	                        PC('c');
 
 	                        break;
 
 	                    case MD_POP_IN_REG:
-	                        pc += sizeof(char);
+	                        PC('c');
 
-	                        processor->registers[ ((int *) (bytecode + pc)) [0] - 97 ] = StackPop(&processor->stProc);
+	                        REEG = POOP();
 
-	                        pc += sizeof(int);
+	                        PC('i');
 
 	                        break;
 
 	                    case MD_POP_IN_RAM:
-	                        pc += sizeof(char);
+	                        PC('c');
 
-	                        processor->operation_mem[ ((int *) (bytecode + pc)) [0] ] = StackPop(&processor->stProc);
+	                       	RAAAM(CUR_SHIFT) = POOP();
 
-	                        pc += sizeof(int);
+	                        PC('i');
 
 	                        sleep(1);
 
 	                        break;
 
 	                    case MD_POP_IN_RAM_REG:
-	                        pc += sizeof(char);
+	                        PC('c');
 
-	                        processor->operation_mem[ processor->registers[ ((int *) (bytecode + pc)) [0] - 97 ] ]
-	                        = StackPop(&processor->stProc);
+	                        RAAAM(REEG) = POOP();
 
-	                        pc += sizeof(int);
+	                        PC('i');
 
 	                        sleep(1);
 
@@ -225,41 +170,35 @@ DEF_CMD(POP, 66, {
 				 } ) // B
 
 DEF_CMD(MUL, 67, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
+            	   	REC(numCom, 'c');
             	 },
 
             	 {
-            	 	StackPush(&processor->stProc, StackPop(&processor->stProc) * StackPop(&processor->stProc));
-
-               	   	pc += sizeof(char); 
+            	 	PUUSH(POOP() * POOP());
+               	   	PC('c');
                	 } )  // C
 
 DEF_CMD(ADD, 68, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
+					REC(numCom, 'c');
             	 },
 
             	 {
-            	 	StackPush(&processor->stProc, StackPop(&processor->stProc) + StackPop(&processor->stProc));
-
-                	pc += sizeof(char);
+            	 	PUUSH(POOP() + POOP());
+                	PC('c');
             	 } ) // D
 
 DEF_CMD(OUT, 69, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
+					REC(numCom, 'c'); 
             	 },
 
             	 {
-            	 	printf("%d\n", StackPop(&processor->stProc));
+            	 	printf("%d\n", POOP());
 
-                	pc += sizeof(char);
+                	PC('c');
             	 } ) // E
 
 DEF_CMD(END, 70, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
+					REC(numCom, 'c');
             	 },
 
             	 {
@@ -267,231 +206,208 @@ DEF_CMD(END, 70, {
             	 } ) // F
 
 DEF_CMD(DIV, 71, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
+					REC(numCom, 'c'); 
             	 },
 
             	 {
-            	 	prom = StackPop(&processor->stProc);
-                	StackPush(&processor->stProc, StackPop(&processor->stProc) / prom);
+            	 	prom = POOP();
+                	PUUSH(POOP() / prom);
 
-                	pc += sizeof(char);
+                	PC('c');
             	 } ) // G
 
 DEF_CMD(SUB, 72, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
+					REC(numCom, 'c'); 
             	 },
 
             	 {
-            	 	prom = StackPop(&processor->stProc);
-                	StackPush(&processor->stProc, StackPop(&processor->stProc) - prom);
+            	 	prom = POOP();
+                	PUUSH(POOP() - prom);
 
-                	pc += sizeof(char);
+                	PC('c');
             	 } ) // H
 
 DEF_CMD(IN, 73, { 
-					bytecode[*pc] = numCom;
-            	  	*pc += sizeof(char);
+					REC(numCom, 'c');
             	}, 
 
             	{
             		printf("Please, enter the number:\n");
 
                 	scanf("%d", &prom);
-                	StackPush(&processor->stProc, prom);
+                	PUUSH(prom);
 
-                	pc += sizeof(char);
+                	PC('c');
             	} ) // I
 
 DEF_CMD(SQRT, 74, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
-            	 },
+					REC(numCom, 'c');
+            	  },
 
-            	 {
-            	 	StackPush(&processor->stProc, ( (int) sqrt(StackPop(&processor->stProc)) ) );
+            	  {
+            	 	PUUSH( SqRt(POOP()) );
 
-                	pc += sizeof(char);
-            	 } ) // J
+                	PC('c');
+            	  } ) // J
 
 DEF_CMD(JMP, 75, {
-					sscanf(str, "%s :%d", com, &var);
-            		bytecode[*pc] = numCom;
-            		*pc += sizeof(char);
+					ASM_FORMAT("%s :%d", com, &var);
+            		REC(numCom, 'c');
 
-            		((int*) (bytecode + *pc)) [0] = Ded32[var];
-            		*pc += sizeof(int);
+            		REC(Ded32[var], 'i');
 				 },
 
 				 {
-				 	pc += sizeof(char);
+				 	PC('c');
 
-                	pc = ((int*) (bytecode + pc)) [0];
+                	PC(CUR_SHIFT);
 				 } ) // K
 
 DEF_CMD(JA, 76, {
-					sscanf(str, "%s :%d", com, &var);
-            		bytecode[*pc] = numCom;
-            		*pc += sizeof(char);
+					ASM_FORMAT("%s :%d", com, &var);
+            		REC(numCom, 'c');
 
-            		((int*) (bytecode + *pc)) [0] = Ded32[var];
-            		*pc += sizeof(int);
-				 },
+            		REC(Ded32[var], 'i');
+				},
 
-				 {
-				 	prom = StackPop(&processor->stProc);
-	                pc += sizeof(char);
+				{
+					prom = POOP();
+	                PC('c');
 
-	                if (prom > StackPop(&processor->stProc)) {
-	                    pc = ((int*) (bytecode + pc)) [0];
+	                if (prom > POOP()) {
+	                    PC(CUR_SHIFT);
 
 	                    break;
 	                }
 
-	                pc += sizeof(int);
-				 } ) // L Last > pre-Last
+	                PC('i');
+				} ) // L Last > pre-Last
 
 DEF_CMD(JB, 77, {
-					sscanf(str, "%s :%d", com, &var);
-            		bytecode[*pc] = numCom;
-            		*pc += sizeof(char);
+					ASM_FORMAT("%s :%d", com, &var);
+            		REC(numCom, 'c');
 
-            		((int*) (bytecode + *pc)) [0] = Ded32[var];
-            		*pc += sizeof(int);
-				 },
+            		REC(Ded32[var], 'i');
+				},
 
-				 {
-				 	prom = StackPop(&processor->stProc);
-                	pc += sizeof(char);
+				{
+					prom = POOP();
+                	PC('c');
 
-                	if (prom < StackPop(&processor->stProc)) {
-                    	pc = ((int*) (bytecode + pc)) [0];
+                	if (prom < POOP()) {
+                    	PC(CUR_SHIFT);
 
                     	break;
                 	}
 
-                	pc += sizeof(int);
-				 } ) // M Last < pre-Last
+                	PC('i');
+				} ) // M Last < pre-Last
 
 DEF_CMD(JC, 78, {
-					sscanf(str, "%s :%d", com, &var);
-            		bytecode[*pc] = numCom;
-            		*pc += sizeof(char);
+					ASM_FORMAT("%s :%d", com, &var);
+            		REC(numCom, 'c');
 
-            		((int*) (bytecode + *pc)) [0] = Ded32[var];
-            		*pc += sizeof(int);
+            		REC(Ded32[var], 'i');
 				},
 
 				{
-					prom = StackPop(&processor->stProc);
-	                pc += sizeof(char);
+					prom = POOP();
+                	PC('c');
 
-	                if (prom == StackPop(&processor->stProc)) {
-	                    pc = ((int*) (bytecode + pc)) [0];
+                	if (prom == POOP()) {
+                    	PC(CUR_SHIFT);
 
-	                    break;
-	                }
+                    	break;
+                	}
 
-	                pc += sizeof(int);
+                	PC('i');
 				} ) // N ==
 
 DEF_CMD(JAC, 79, {
-					sscanf(str, "%s :%d", com, &var);
-            		bytecode[*pc] = numCom;
-            		*pc += sizeof(char);
+					ASM_FORMAT("%s :%d", com, &var);
+            		REC(numCom, 'c');
 
-            		((int*) (bytecode + *pc)) [0] = Ded32[var];
-            		*pc += sizeof(int);
+            		REC(Ded32[var], 'i');
 				 },
 
 				 {
-				 	prom = StackPop(&processor->stProc);
-	                pc += sizeof(char);
+				 	prom = POOP();
+                	PC('c');
 
-	                if (prom >= StackPop(&processor->stProc)) {
-	                    pc = ((int*) (bytecode + pc)) [0];
+                	if (prom >= POOP()) {
+                    	PC(CUR_SHIFT);
 
-	                    break;
-	                }
+                    	break;
+                	}
 
-	                pc += sizeof(int);
+                	PC('i');
 				 } ) // O >=
 
 DEF_CMD(JBC, 80, {
-					sscanf(str, "%s :%d", com, &var);
-            		bytecode[*pc] = numCom;
-            		*pc += sizeof(char);
+					ASM_FORMAT("%s :%d", com, &var);
+            		REC(numCom, 'c');
 
-            		((int*) (bytecode + *pc)) [0] = Ded32[var];
-            		*pc += sizeof(int);
+            		REC(Ded32[var], 'i');
 				 },
 
 				 {
-				 	prom = StackPop(&processor->stProc);
-	                pc += sizeof(char);
+				 	prom = POOP();
+                	PC('c');
 
-	                if (prom <= StackPop(&processor->stProc)) {
-	                    pc = ((int*) (bytecode + pc)) [0];
+                	if (prom <= POOP()) {
+                    	PC(CUR_SHIFT);
 
-	                    break;
-	                }
+                    	break;
+                	}
 
-	                pc += sizeof(int);
+                	PC('i');
 				 } ) // P <=
 
 DEF_CMD(JRC, 81, {
-					sscanf(str, "%s :%d", com, &var);
-            		bytecode[*pc] = numCom;
-            		*pc += sizeof(char);
+					ASM_FORMAT("%s :%d", com, &var);
+            		REC(numCom, 'c');
 
-            		((int*) (bytecode + *pc)) [0] = Ded32[var];
-            		*pc += sizeof(int);
+            		REC(Ded32[var], 'i');
 				 },
 
 				 {
-				 	prom = StackPop(&processor->stProc);
-	                pc += sizeof(char);
+				 	prom = POOP();
+                	PC('c');
 
-	                if (prom != StackPop(&processor->stProc)) {
-	                    pc = ((int*) (bytecode + pc)) [0];
+                	if (prom != POOP()) {
+                    	PC(CUR_SHIFT);
 
-	                    break;
-	                }
+                    	break;
+                	}
 
-	                pc += sizeof(int);
+                	PC('i');
 				 } ) // Q !=
 
 DEF_CMD(CALL, 82, {
-					sscanf(str, "%s :%d", com, &var);
-            		bytecode[*pc] = numCom;
-            		*pc += sizeof(char);
+					ASM_FORMAT("%s :%d", com, &var);
+            		REC(numCom, 'c');
 
-            		((int*) (bytecode + *pc)) [0] = Ded32[var];
-            		*pc += sizeof(int);
-				  },
+            		REC(Ded32[var], 'i');
+				 },
 
-				  {
-				 	pc += sizeof(char);
+				 {
+				 	PC('c');
 
-	                callLabels.push(pc + sizeof(int));
+	                CALL();
 
-	                pc = ((int*) (bytecode + pc)) [0];
-				  } ) // R
+	                PC(CUR_SHIFT);
+				 } ) // R
 
 DEF_CMD(RET, 83, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
+					REC(numCom, 'c');
             	 },
 
             	 {
-            	 	pc = callLabels.top();
-                	callLabels.pop();
+            	 	REET();
             	 } ) // S
 
 DEF_CMD(CAT, 84, {
-					bytecode[*pc] = numCom;
-            	   	*pc += sizeof(char); 
+					REC(numCom, 'c'); 
             	 },
 
             	 {
@@ -537,7 +453,7 @@ DEF_CMD(CAT, 84, {
 	                       "  |   [_]  [_][_____________][_] [_][][][] [__][]||  |\n"
 	                       "  '--------------------------------------------------'\n");
 
-                	pc += sizeof(char);
+                	PC('c');
             	 } ) // T
 
 

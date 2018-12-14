@@ -123,7 +123,7 @@ void new_member(tree* nameTree, tree_elem* position) {
     TreeAdd(nameTree, before, 'L', position);
     TreeAdd(nameTree, member, 'R', position);
 
-    printf("Хорошо, я запомню это.\n");
+    printf("Хорошо, я запомню это.\n\n");
 
     assert_tree(nameTree);
 }

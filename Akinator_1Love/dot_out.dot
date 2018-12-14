@@ -1,0 +1,226 @@
+digraph {
+	node[shape = "octagon", color = "#191970", fontsize = 12, style = "filled", fillcolor = "#87CEFA"];
+	edge[color = "#191970", fontsize = 14];
+
+		"существует"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"существует"->"сказочный"[label = "No"];
+
+		"сказочный"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"сказочный"->"из книги"[label = "No"];
+
+		"из книги"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"из книги"->"animal"[label = "No"];
+
+		"animal"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"animal"->"из комикса"[label = "No"];
+
+		"из комикса"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"из комикса"->"Эфирный дед"[label = "No"];
+
+		"из комикса"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"из комикса"->"Аквамэн"[label = "Yes"];
+
+		"animal"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"animal"->"покемон"[label = "Yes"];
+
+		"покемон"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"покемон"->"единорог"[label = "No"];
+
+		"покемон"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"покемон"->"Пикачу"[label = "Yes"];
+
+		"из книги"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"из книги"->"животное"[label = "Yes"];
+
+		"животное"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"животное"->"летал на ядре"[label = "No"];
+
+		"летал на ядре"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"летал на ядре"->"Томас Гарвей"[label = "No"];
+
+		"летал на ядре"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"летал на ядре"->"Барон Мюнхгаузен"[label = "Yes"];
+
+		"животное"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"животное"->"собака"[label = "Yes"];
+
+		"собака"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"собака"->"любит скакать"[label = "No"];
+
+		"любит скакать"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"любит скакать"->"живет в рф"[label = "No"];
+
+		"живет в рф"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"живет в рф"->"Кинг Конг"[label = "No"];
+
+		"живет в рф"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"живет в рф"->"Москаль"[label = "Yes"];
+
+		"любит скакать"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"любит скакать"->"Пинг Понг"[label = "Yes"];
+
+		"собака"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"собака"->"Белый Бим Черное Ухо"[label = "Yes"];
+
+		"сказочный"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"сказочный"->"маг"[label = "Yes"];
+
+		"маг"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"маг"->"Джэк"[label = "No"];
+
+		"маг"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"маг"->"бородатый"[label = "Yes"];
+
+		"бородатый"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"бородатый"->"Аватар Аанг"[label = "No"];
+
+		"бородатый"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"бородатый"->"Властелин Колец"[label = "Yes"];
+
+		"Властелин Колец"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"Властелин Колец"->"приносит подарки"[label = "No"];
+
+		"приносит подарки"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"приносит подарки"->"Маг Мерлин"[label = "No"];
+
+		"приносит подарки"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"приносит подарки"->"живет за бугром"[label = "Yes"];
+
+		"живет за бугром"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"живет за бугром"->"Дед Мороз"[label = "No"];
+
+		"живет за бугром"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"живет за бугром"->"Санта Клаус"[label = "Yes"];
+
+		"Властелин Колец"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"Властелин Колец"->"Саруман"[label = "Yes"];
+
+		"существует"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"существует"->"студент"[label = "Yes"];
+
+		"студент"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"студент"->"преподает аналит"[label = "No"];
+
+		"преподает аналит"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"преподает аналит"->"город"[label = "No"];
+
+		"город"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"город"->"страна"[label = "No"];
+
+		"страна"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"страна"->"президент России"[label = "No"];
+
+		"президент России"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"президент России"->"есть хвост"[label = "No"];
+
+		"есть хвост"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"есть хвост"->"хохол"[label = "No"];
+
+		"хохол"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"хохол"->"без булдырабыз"[label = "No"];
+
+		"без булдырабыз"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"без булдырабыз"->"Ded"[label = "No"];
+
+		"без булдырабыз"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"без булдырабыз"->"Миннеханов"[label = "Yes"];
+
+		"хохол"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"хохол"->"сегодня завтрашний день"[label = "Yes"];
+
+		"сегодня завтрашний день"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"сегодня завтрашний день"->"Порошенко"[label = "No"];
+
+		"сегодня завтрашний день"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"сегодня завтрашний день"->"Кличко"[label = "Yes"];
+
+		"есть хвост"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"есть хвост"->"есть свой канал"[label = "Yes"];
+
+		"есть свой канал"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"есть свой канал"->"полторашка"[label = "No"];
+
+		"есть свой канал"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"есть свой канал"->"голубь Наташа"[label = "Yes"];
+
+		"президент России"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"президент России"->"Путин"[label = "Yes"];
+
+		"страна"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"страна"->"родина"[label = "Yes"];
+
+		"родина"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"родина"->"пендосы"[label = "No"];
+
+		"пендосы"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"пендосы"->"Дания"[label = "No"];
+
+		"пендосы"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"пендосы"->"Америка"[label = "Yes"];
+
+		"родина"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"родина"->"Россия"[label = "Yes"];
+
+		"город"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"город"->"столица"[label = "Yes"];
+
+		"столица"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"столица"->"Тамбов"[label = "No"];
+
+		"столица"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"столица"->"Москва"[label = "Yes"];
+
+		"преподает аналит"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"преподает аналит"->"Штепин"[label = "Yes"];
+
+		"студент"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"студент"->"татарин"[label = "Yes"];
+
+		"татарин"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"татарин"->"ботает"[label = "No"];
+
+		"ботает"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"ботает"->"girl"[label = "No"];
+
+		"girl"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"girl"->"Давыдов"[label = "No"];
+
+		"girl"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"girl"->"с рт"[label = "Yes"];
+
+		"с рт"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"с рт"->"Юля"[label = "No"];
+
+		"с рт"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"с рт"->"собака Павлова"[label = "Yes"];
+
+		"ботает"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"ботает"->"девушка"[label = "Yes"];
+
+		"девушка"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"девушка"->"есть фотоаппарат"[label = "No"];
+
+		"есть фотоаппарат"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"есть фотоаппарат"->"Айрат"[label = "No"];
+
+		"есть фотоаппарат"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"есть фотоаппарат"->"Влад"[label = "Yes"];
+
+		"девушка"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"девушка"->"Галя"[label = "Yes"];
+
+		"татарин"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"татарин"->"из Нижнекамска"[label = "Yes"];
+
+		"из Нижнекамска"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"из Нижнекамска"->"Искандер"[label = "No"];
+
+		"из Нижнекамска"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"из Нижнекамска"->"негр"[label = "Yes"];
+
+		"негр"[shape = "ellipse", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"негр"->"Артём"[label = "No"];
+
+		"негр"[shape = "egg", color="#191970", style="filled", fillcolor = "#E0FFFF"];
+		"негр"->"Азат"[label = "Yes"];
+}

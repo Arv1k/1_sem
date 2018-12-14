@@ -1,6 +1,6 @@
 #include "akinator.h"
 
-int main() {
+int main(int argc, char* argv[]) {
     printf("#---------------------#\n"
            "# Версия 0.2.0, альфа #\n"
            "# Создано Arv1k-ом    #\n"
@@ -31,7 +31,7 @@ int main() {
     tree myTree = {};
     TreeCtor(&myTree);
 
-    FILE* enterTree = fopen("../enterTree", "rb");
+    FILE* enterTree = fopen(argv[1], "rb");
     assert(enterTree);
 
     TreeReadAkinator(&myTree, enterTree);
@@ -50,7 +50,7 @@ int main() {
 
             scanf("\n%c", &ans);
 
-            if      (ans == 'y') printf("Я так и знал!)\n");
+            if      (ans == 'y') printf("Я так и знал!)\n\n");
             else if (ans == 'n') new_member(&myTree, pos);
             else {
                 printf("Неверная команда!\n");
@@ -61,9 +61,15 @@ int main() {
 
         else if (ans == 's') {
             printf("Определение кого вам дать?\n");
-            char buff[max_string] = {};
+            char buff[max_string] = "\n";
 
-            scanf("\n%[^\n]", buff);
+            fflush(stdin);
+
+            while (*buff == '\n') fgets(buff, max_string, stdin);
+
+            char* point = strchr(buff, '\n');
+            *point = '\0';
+
             search_member(&myTree, buff);
         }
 
@@ -77,17 +83,25 @@ int main() {
                "# да [y], выйти [q]\n");
 
         scanf("\n%c", &ans);
+
+        if (ans != 'y' && ans != 'q') {
+            printf("Неверная команда!\n");
+
+            break;
+        }
     }
 
     printf("Пока!\n");
 
-    FILE* outputFile = fopen("../enterTree", "w");
+    FILE* outputFile = fopen(argv[1], "w");
     assert(outputFile);
 
     TreePrint(myTree.Tamyr, outputFile);
 
     assert(outputFile);
     fclose(outputFile);
+
+    akinator_dot(&myTree, argv[2]);
 
     TreeDtor(&myTree);
 }

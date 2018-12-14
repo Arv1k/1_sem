@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstring>
 #include "enc_dir/enc.h"
+#include "../DSL.h"
 
 const int yad = -111;
 

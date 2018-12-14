@@ -138,4 +138,38 @@ tree_elem* TreeSearch(tree_elem* position, data_t elem) {
     return cur;
 }
 
+void akinator_dot (tree* nameTree, char* dot_out) {
+    FILE *file_dot = fopen(dot_out, "wb");
+    assert(file_dot);
+
+    fprintf(file_dot, "digraph {\n");
+    fprintf(file_dot, "\tnode[shape = \"octagon\", color = \"#191970\", fontsize = 12, style = \"filled\", fillcolor = \"#87CEFA\"];\n"
+                      "\tedge[color = \"#191970\", fontsize = 14];\n");
+
+    create_tree (nameTree->Tamyr, file_dot);
+
+    fprintf(file_dot, "}");
+
+    assert(file_dot);
+    fclose(file_dot);
+
+    system("dot -Tjpg -o tree.jpg dot_out.dot");
+    system("xviewer tree.jpg");
+}
+
+void create_tree (tree_elem* pos, FILE* dot_out) {
+    if (pos->Left != nullptr) {
+        fprintf (dot_out, "\n\t\t\"%s\"[shape = \"ellipse\", color=\"#191970\", style=\"filled\", fillcolor = \"#E0FFFF\"];\n"
+                          "\t\t\"%s\"->\"%s\"[label = \"No\"];\n", pos->Info, pos->Info, (pos->Left)->Info);
+
+        create_tree (pos->Left, dot_out);
+    }
+
+    if (pos->Right != nullptr) {
+        fprintf (dot_out, "\n\t\t\"%s\"[shape = \"egg\", color=\"#191970\", style=\"filled\", fillcolor = \"#E0FFFF\"];\n"
+                          "\t\t\"%s\"->\"%s\"[label = \"Yes\"];\n", pos->Info, pos->Info, (pos->Right)->Info);
+
+        create_tree (pos->Right, dot_out);
+    }
+}
 

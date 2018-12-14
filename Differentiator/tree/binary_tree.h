@@ -21,22 +21,43 @@
     }\
 }
 
-typedef char* data_t;
 
-const int yad_count = 119;
-const data_t yad_elem = nullptr;
+enum {
+    MODE_NUMBER = 65,
+    MODE_VAR    = 66,
+    MODE_SIGN   = 67,
+    MODE_OP     = 68
+};
+
+const int yad_num = -111;
+const char yad_sign = -22;
+const size_t yad_mode = 911;
+
+struct DatA {
+    char* var   = nullptr;
+    char* op    = nullptr;
+    char sign   = yad_sign;
+    int number  = yad_num;
+    size_t mode = yad_mode;
+};
+
+
+typedef DatA data_t;
 
 
 struct tree_elem {
-    data_t Info = yad_elem;
+    data_t Info = {};
     tree_elem* Parent = nullptr;
-    tree_elem* Left = nullptr;
-    tree_elem* Right = nullptr;
+    tree_elem* Left   = nullptr;
+    tree_elem* Right  = nullptr;
 };
+
+
+const int yad_count = 119;
 
 struct tree {
     tree_elem* Tamyr = nullptr;
-    size_t count = yad_count;
+    size_t     count = yad_count;
 };
 
 
@@ -98,7 +119,7 @@ void TreePrint(tree_elem* position, FILE* enterTree);
 //!
 //! \param position
 //----------------------------------------------------------------------------------------------------------------------
-void TreeDoyElems(tree_elem* position);
+void TreeDoyElems(tree_elem* position, size_t* con);
 
 //----------------------------------------------------------------------------------------------------------------------
 //!
@@ -114,10 +135,6 @@ void TreeElemsOK(tree_elem* position, int* i);
 //! \return
 //----------------------------------------------------------------------------------------------------------------------
 tree_elem* TreeSearch(tree_elem* position, data_t elem);
-
-void akinator_dot (tree* nameTree, char* dot_out);
-
-void create_tree (tree_elem* position, FILE* dot_out);
 
 
 #endif //AKINATOR_1LOVE_TREE_H
