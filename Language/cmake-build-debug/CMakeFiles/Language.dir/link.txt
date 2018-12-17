@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/Language.dir/main.cpp.o CMakeFiles/Language.dir/language.cpp.o CMakeFiles/Language.dir/home/victoroff/CLionProjects/make_enc/enc.cpp.o  -o Language 
