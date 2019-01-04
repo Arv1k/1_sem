@@ -62,91 +62,214 @@ tree_elem* TreeNode(tree* nameTree, data_t elem, char branch, tree_elem* positio
     return nullptr;
 }
 
-/*void TreePrint(tree_elem* position, FILE* enterTree) {
+
+Var variables[32] = {};
+int pos = 0;
+int num = 0;
+int jump = 0;
+int jump_tmp = 0;
+int jump_tmp1 = 0;
+
+Call calls[32] = {};
+int pos_calls = 0;
+
+int tempo = 0;
+
+void TreePrint(tree_elem* position, FILE* enterTree) {
     if (!position) return;
 
-    if ((position->Info).mode == MODE_SIGN) {
-        if ((position->Info).sign == '/') {
-            fprintf(enterTree, "\\frac{");
+    switch ((position->Info).mode) {
+        case MODE_CALL:
+            if (func_search(position->Left) != -1) {
+                fprintf(enterTree, "call :%d\n", calls[func_search(position->Left)].jumpNum);
+
+                return;
+            }
+
+            fprintf(enterTree, "call :%d\n", jump);
+
+            calls[pos_calls].name = ((position->Left)->Info).name;
+            calls[pos_calls].jumpNum = jump;
+
+            jump++;
+
+            if (!position->Right) {
+                pos_calls++;
+
+                return;
+            }
+            else if (((position->Right)->Info).mode == MODE_VARIABLES) {
+                (calls[pos_calls].perem)[0] = Place_op((position->Right)->Left);
+                (calls[pos_calls].perem)[1] = Place_op((position->Right)->Right);
+            }
+
+            else (calls[pos_calls].perem)[0] = Place_op(position->Right);
+
+            pos_calls++;
+
+            return;
+
+        case MODE_FUNC:
+            TreePrint(position->Left, enterTree);
+            fprintf(enterTree, "\n\n");
+            TreePrint(position->Right, enterTree);
+
+            return;
+
+        case MODE_NAME:
+            if (strcmp((position->Info).name, "баш") == 0) {
+                TreePrint(position->Left, enterTree);
+                TreePrint(position->Right, enterTree);
+
+                fprintf(enterTree, "end\n");
+
+                return;
+            }
+
+            tempo = Place_func(position);
+
+            fprintf(enterTree, ":%d\n", calls[tempo].jumpNum);
+
+            if (!position->Right) {
+                TreePrint(position->Left, enterTree);
+                fprintf(enterTree, "ret");
+
+                return;
+            }
+            else if (((position->Right)->Info).mode == MODE_VARIABLES) {
+                variables[num].Name = (((position->Right)->Left)->Info).name;
+                variables[num].position = calls->perem[0];
+                num++;
+
+                variables[num].Name = (((position->Right)->Right)->Info).name;
+                variables[num].position = calls->perem[1];
+                num++;
+            }
+
+            else {
+                variables[num].Name = ((position->Right)->Info).name;
+                variables[num].position = calls->perem[0];
+                num++;
+            }
 
             TreePrint(position->Left, enterTree);
-            fprintf(enterTree, "}{");
+            fprintf(enterTree, "ret");
+
+            return;
+
+        case MODE_BORN:
+            variables[num].Name = ((position->Left)->Info).name;
+            variables[num].position = pos;
+            pos++;
+            num++;
+
+            return;
+
+        case MODE_LOOP:
+            fprintf(enterTree, ":%d\n", jump);
+
+            jump_tmp = jump;
+            jump++;
+
+            TreePrint(position->Left, enterTree);
+
+            fprintf(enterTree, ":%d\n", jump);
+
+            jump_tmp1 = jump;
+            jump++;
 
             TreePrint(position->Right, enterTree);
-            fprintf(enterTree, "}");
+
+            fprintf(enterTree, "jmp :%d\n", jump_tmp);
+
+            fprintf(enterTree, ":%d\n", jump_tmp1);
 
             return;
-        }
 
-        if ((position->Info).sign == '^') {
-            if (is_leaf(position->Left)) TreePrint(position->Left, enterTree);
+        case MODE_IF:
+            TreePrint(position->Left, enterTree);
 
-            else {
-                fprintf(enterTree, "(");
-                TreePrint(position->Left, enterTree);
-                fprintf(enterTree, ")");
-            }
+            fprintf(enterTree, ":%d\n", jump);
 
-            fprintf(enterTree, "^{");
             TreePrint(position->Right, enterTree);
-            fprintf(enterTree, "}");
+
+            fprintf(enterTree, ":%d\n", jump);
+
+            jump++;
 
             return;
-        }
 
-        if ((position->Info).sign == '*') {
-            if (is_leaf(position->Left)) TreePrint(position->Left, enterTree);
+        case MODE_ASSIGN:
+            TreePrint(position->Right, enterTree);
 
-            else if (((position->Left)->Info).sign == '^' ||
-                     ((position->Left)->Info).sign == '*' ||
-                     ((position->Left)->Info).sign == '/' ||
-                     ((position->Left)->Info).mode == MODE_OP) TreePrint(position->Left, enterTree);
+            fprintf(enterTree, "pop [%d]\n", Place_op(position->Left));
+            return;
 
-            else {
-                fprintf(enterTree, "(");
-                TreePrint(position->Left, enterTree);
-                fprintf(enterTree, ")");
-            }
+        case MODE_IN:
+            fprintf(enterTree, "in\n");
 
-            if (is_leaf(position->Right)) TreePrint(position->Right, enterTree);
-
-            else if (((position->Right)->Info).sign == '^' ||
-                     ((position->Right)->Info).sign == '*' ||
-                     ((position->Right)->Info).sign == '/' ||
-                     ((position->Right)->Info).mode == MODE_OP) TreePrint(position->Right, enterTree);
-
-            else {
-                fprintf(enterTree, "(");
-                TreePrint(position->Right, enterTree);
-                fprintf(enterTree, ")");
-            }
+            fprintf(enterTree, "pop [%d]\n", Place_op(position->Left));
 
             return;
-        }
     }
 
     TreePrint(position->Left, enterTree);
-
-    if      ((position->Info).mode == MODE_VAR) fprintf(enterTree, "%s", (position->Info).var);
-
-    else if ((position->Info).mode == MODE_OP) {
-        if (is_leaf(position->Right)) fprintf(enterTree, "\\%s ", (position->Info).op);
-
-        else {
-            fprintf(enterTree, "\\%s(", (position->Info).op);
-            TreePrint(position->Right, enterTree);
-            fprintf(enterTree, ")");
-        }
-
-        return;
-    }
-
-    else if ((position->Info).mode == MODE_SIGN)   fprintf(enterTree, "%c", (position->Info).sign);
-
-    else if ((position->Info).mode == MODE_NUMBER) fprintf(enterTree, "%d", (position->Info).number);
-
     TreePrint(position->Right, enterTree);
-}*/
+
+    switch ((position->Info).mode) {
+        case MODE_OP:
+            fprintf(enterTree, "%s\n", (position->Info).name);
+            break;
+
+        case MODE_SIGN:
+            if      ((position->Info).number == '+') fprintf(enterTree, "add\n");
+            else if ((position->Info).number == '-') fprintf(enterTree, "sub\n");
+            else if ((position->Info).number == '*') fprintf(enterTree, "mul\n");
+            else if ((position->Info).number == '/') fprintf(enterTree, "div\n");
+
+            break;
+
+        case MODE_VAR:
+            fprintf(enterTree, "push [%d]\n", Place_op(position));
+            break;
+
+        case MODE_NUMBER:
+            fprintf(enterTree, "push %d\n", (position->Info).number);
+            break;
+
+        case MODE_OPERATORR:
+            break;
+
+        case MODE_OUT:
+            fprintf(enterTree, "out\n");
+            break;
+
+        case MODE_RETURN:
+            fprintf(enterTree, "pop rax\n"
+                               "ret\n");
+            break;
+
+        case MODE_BIGGER:
+            fprintf(enterTree, "ja ");
+            break;
+
+        case MODE_EQUAL:
+            fprintf(enterTree, "jrc ");
+            break;
+
+        case MODE_LESS:
+            fprintf(enterTree, "jb ");
+            break;
+
+        case MODE_NOT_EQUAL:
+            fprintf(enterTree, "jc ");
+            break;
+
+        default:
+            printf("ERROR!!!\n");
+            abort();
+    }
+}
 
 bool TreeDtor(tree* nameTree) {
     assert_tree(nameTree);
@@ -223,5 +346,41 @@ bool is_leaf(tree_elem* position) {
 
     return cur;
 }*/
+
+int Place_op(tree_elem* position) {
+   for (int i = 0; i < 32; i++)
+       if(strcmp(variables[i].Name, (position->Info).name) == 0)
+           return variables[i].position;
+
+
+   printf("Variable %s is not initialized!!!\n", (position->Info).name);
+   abort();
+}
+
+int Place_func(tree_elem* position) {
+    assert((position->Info).name);
+
+    for (int i = 0; i < 32; i++) {
+        if (calls[i].name != nullptr)
+            if (strcmp(calls[i].name, (position->Info).name) == 0)
+                return i;
+    }
+
+
+    printf("Function %s is not initialized!!!\n", (position->Info).name);
+    abort();
+}
+
+int func_search(tree_elem* position) {
+    assert((position->Info).name);
+
+    for (int i = 0; i < 32; i++) {
+        if (calls[i].name != nullptr)
+            if (strcmp(calls[i].name, (position->Info).name) == 0)
+                return i;
+    }
+
+    return -1;
+}
 
 

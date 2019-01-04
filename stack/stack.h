@@ -88,7 +88,7 @@ enum STACK_ERRORS {
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackCtor\n\n
-//! StackCtor function initialise the stack.
+//! StackCtor function initialise stack.
 //!
 //! \param nameStack - pointer to stack.
 //! \param capacity - stack capacity.
@@ -99,10 +99,10 @@ size_t StackCtor(Stack* nameStack, size_t capacity = 0);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackPush\n\n
-//! StackPush function pushes element in the stack.
+//! StackPush function pushes element in stack.
 //!
-//! \param nameStack - pointer to the stack.
-//! \param variable - the variable we want to push in the stack.
+//! \param nameStack - pointer to stack.
+//! \param variable - the variable we want to push in stack.
 //! \return - returns 1 if all is well and returns STACK_ERROR_PUSH if something uncommon.
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -110,10 +110,10 @@ size_t StackPush(Stack* nameStack, data_t variable);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackPop\n\n
-//! StackPop function pops element from the stack.
+//! StackPop function pops element from stack.
 //!
-//! \param nameStack - pointer to the stack.
-//! \return - returns the element which was popped. If there isn't any element to pop returns NAN
+//! \param nameStack - pointer to stack.
+//! \return - returns element which was popped. If there isn't any element to pop returns NAN
 //! and returns STACK_ERROR_POP if can't allocate memory.
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ data_t StackPop(Stack* nameStack);
 //! StackPeek\n\n
 //! StackPeek function shows the top element.
 
-//! \param nameStack - pointer to the stack.
+//! \param nameStack - pointer to stack.
 //! \return - returns the top element. If there isn't any element returns NAN,
 //! and returns STACK_ERROR_PEEK if something uncommon.
 //----------------------------------------------------------------------------------------------------------------------
@@ -132,28 +132,28 @@ data_t StackPeek(Stack* nameStack);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackClear\n\n
-//! StackClear function clears all the stack (memory is filled with nan's).
+//! StackClear function clears all stack (memory is filled with nan's).
 //!
-//! \param nameStack - pointer to the stack.
+//! \param nameStack - pointer to stack.
 //----------------------------------------------------------------------------------------------------------------------
 
 void StackClear(Stack* nameStack);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackDtor\n\n
-//! Destroy the the stack.
+//! Destroy the stack.
 //!
-//! \param nameStack - pointer to the stack.
+//! \param nameStack - pointer to stack.
 //----------------------------------------------------------------------------------------------------------------------
 
 void StackDtor(Stack* nameStack);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackMem\n\n
-//! StackMem function allocates memory for the stack.
+//! StackMem function allocates memory for stack.
 //!
-//! \param nameStack - pointer to the stack.
-//! \param initialSize - size of initialise for the stack.
+//! \param nameStack - pointer to stack.
+//! \param initialSize - size of initialise for stack.
 //! \return - return STACK_ERROR_INIT if can't allocate memory and 1 if all is well.
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -163,7 +163,7 @@ size_t StackMem(Stack* nameStack, size_t initialSize = 0);
 //! StackPushMemInc\n\n
 //! StackPushMemInc function allocate new memory if it's needed.
 //!
-//! \param nameStack - pointer to the stack.
+//! \param nameStack - pointer to stack.
 //! \return - returns STACK_ERROR_REALLOC if can't allocate memory and 1 if all is well.
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -173,7 +173,7 @@ size_t StackPushMemInc (Stack* nameStack);
 //! StackPopMemDec\n\n
 //! StackPopMemDec function decrease memory if it's not needed.
 //!
-//! \param nameStack - pointer to the stack.
+//! \param nameStack - pointer to stack.
 //! \return - returns STACK_ERROR_REALLOC if can't allocate memory and 1 if all is well.
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -181,9 +181,9 @@ size_t StackPopMemDec(Stack* nameStack);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! StackOK\n\n
-//! StackOK function checks the stack.
+//! StackOK function checks stack.
 //!
-//! \param nameStack - pointer to the stack.
+//! \param nameStack - pointer to stack.
 //! \return - returns 0 if there is something wrong, and 1 if all is well.
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -191,18 +191,18 @@ bool StackOK(Stack* nameStack);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Dump\n\n
-//! Dump function creates DUMP.txt file and writes there information about the stack
+//! Dump function creates DUMP.txt file and writes there information about Stack
 //!
-//! \param nameStack - pointer to the stack.
+//! \param nameStack - pointer to stack.
 //----------------------------------------------------------------------------------------------------------------------
 
 void Dump(Stack* nameStack);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! unittest/n/n
-//! unittest function tests the stack looking for promblems or mistakes
+//! unittest function tests stack looking for promblems or mistakes
 //!
-//! \param nameStack - pointer to the stack.
+//! \param nameStack - pointer to stack.
 //----------------------------------------------------------------------------------------------------------------------
 
 void unittest(Stack* nameStack);

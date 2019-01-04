@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/victoroff/CLionProjects/make_enc/enc.cpp
+enc.h
+/home/victoroff/CLionProjects/make_enc/enc.h
+
+/home/victoroff/CLionProjects/make_enc/enc.h
+cstdio
+-
+cstring
+-
+cassert
+-
+cmath
+-
+cstdlib
+-
+
+/home/victoroff/CLionProjects/make_enc/main.cpp
+enc.h
+/home/victoroff/CLionProjects/make_enc/enc.h
+

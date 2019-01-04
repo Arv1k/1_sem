@@ -24,6 +24,16 @@ int main(int argc, char* argv[]) {
 
     tree_dot(&TrEE, argv[2]);
 
+    FILE* asm_out = fopen(argv[3], "wb");
+    assert(asm_out);
+
+    TreePrint(TrEE.Tamyr, asm_out);
+
+    assert(asm_out);
+    fclose(asm_out);
+
+    compile();
+
     TreeDtor(&TrEE);
     free(buffer);
 }

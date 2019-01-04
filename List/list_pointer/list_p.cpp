@@ -20,13 +20,11 @@ bool ListPop_front(list* nameList) {
     }
 
     else if (nameList->Head == nameList->Tail) {
-        list_elem* cur_front = nameList->Head;
+        free(nameList->Head);
 
-        nameList->Tail = nullptr;
         nameList->Head = nullptr;
+        nameList->Tail = nullptr;
         nameList->count = 0;
-
-        free(cur_front);
 
         assert_list(nameList);
         return true;
@@ -58,13 +56,11 @@ bool ListPop_back(list* nameList) {
     }
 
     else if (nameList->Head == nameList->Tail) {
-        list_elem* cur_back = nameList->Tail;
+        free(nameList->Tail);
 
         nameList->Tail = nullptr;
         nameList->Head = nullptr;
         nameList->count = 0;
-
-        free(cur_back);
 
         assert_list(nameList);
         return true;
@@ -172,7 +168,6 @@ list_elem* ListInsert_before(list* nameList, data_t elem, list_elem* position) {
     element->Next = position;
 
     if (element->Prev == nullptr) nameList->Head = element;
-    if (element->Next == nullptr) nameList->Tail = element;
 
     nameList->count++;
 
@@ -204,7 +199,6 @@ list_elem* ListInsert_after(list* nameList, data_t elem, list_elem* position) {
 
     element->Prev = position;
 
-    if (element->Prev == nullptr) nameList->Head = element;
     if (element->Next == nullptr) nameList->Tail = element;
 
     nameList->count++;
@@ -253,17 +247,20 @@ bool ListDelete(list* nameList, list_elem* position) {
     return true;
 }
 
+//$do(wtf)  { printf ("%s:\n", #wtf); wtf; }
+
 bool ListDtor(list* nameList) {
     assert_list(nameList);
 
-    if (nameList->count != 0)
-        for (int i = 1; i <= nameList->count; i++)
-            ListPop_back(nameList);
+    if (nameList->count != 0) {
+        size_t iskan = nameList->count;
+
+        for (int i = 0; i < iskan; i++) ListPop_back(nameList);
+    }
 
     nameList->count = yad_count;
 
-    nameList = nullptr;
-
+    assert(nameList);
     return true;
 }
 
@@ -283,64 +280,68 @@ bool ListOK(list* nameList) {
 }
 
 void DumpList(list* nameList) {
-    printf("#----------------------------------------------------------\n");
-    printf("# List [%p] ", nameList);
+    FILE* Dump = fopen("../DumpList.txt", "a+");
+
+    fprintf(Dump ,"#----------------------------------------------------------\n");
+    fprintf(Dump ,"# List [%p] ", nameList);
     if (nameList == nullptr) {
-        printf("(!!!ERROR!!!)\n"
+        fprintf(Dump, "(!!!ERROR!!!)\n"
                "#----------------------------------------------------------\n");
 
         return;
     }
 
-    printf("{\n");
+    fprintf(Dump ,"{\n");
 
-    printf("#     Head [%p] ", nameList->Head);
-    if (nameList->Head == nullptr)              printf("nullptr; (?)\n");
+    fprintf(Dump, "#     Head [%p] ", nameList->Head);
+    if (nameList->Head == nullptr)              fprintf(Dump, "nullptr; (?)\n");
     else {
-        if ((nameList->Head)->Info == yad_elem) printf("%d; (!!!)\n", (nameList->Head)->Info);
-        else                                    printf("%d;\n", (nameList->Head)->Info);
+        if ((nameList->Head)->Info == yad_elem) fprintf(Dump, "%d; (!!!)\n", (nameList->Head)->Info);
+        else                                    fprintf(Dump, "%d;\n", (nameList->Head)->Info);
     }
 
-    printf("#     Tail [%p] ", nameList->Tail);
+    fprintf(Dump, "#     Tail [%p] ", nameList->Tail);
 
-    if (nameList->Tail == nullptr) printf("nullptr; (?)\n");
+    if (nameList->Tail == nullptr)              fprintf(Dump, "nullptr; (?)\n");
     else {
-        if ((nameList->Tail)->Info == yad_elem) printf("%d; (!!!)\n", (nameList->Tail)->Info);
-        else                                    printf("%d;\n", (nameList->Tail)->Info);
+        if ((nameList->Tail)->Info == yad_elem) fprintf(Dump, "%d; (!!!)\n", (nameList->Tail)->Info);
+        else                                    fprintf(Dump, "%d;\n", (nameList->Tail)->Info);
     }
 
-    printf("#     Count ");
+    fprintf(Dump, "#     Count ");
 
     if (nameList->count == yad_count) {
-        printf("%lu; (!!!yad!!!)\n", nameList->count);
-        printf("# }\n");
+        fprintf(Dump, "%lu; (!!!yad!!!)\n", nameList->count);
+        fprintf(Dump, "# }\n");
 
-        printf("#----------------------------------------------------------\n");
+        fprintf(Dump, "#----------------------------------------------------------\n");
 
         return;
     }
 
     else if (nameList->count == 0) {
-        printf("%lu; (?)\n", nameList->count);
-        printf("# }\n");
+        fprintf(Dump, "%lu; (?)\n", nameList->count);
+        fprintf(Dump, "# }\n");
 
-        printf("#----------------------------------------------------------\n");
+        fprintf(Dump, "#----------------------------------------------------------\n");
 
         return;
     }
 
-    printf("%lu;\n", nameList->count);
+    fprintf(Dump, "%lu;\n", nameList->count);
 
-    printf("#     Elements {\n");
+    fprintf(Dump, "#     Elements {\n");
 
     list_elem* prom = nameList->Head;
     for (int i = 1; i <= nameList->count; i++) {
-        printf("#         %d:  [%p]  %d\n", i, prom, prom->Info);
+        fprintf(Dump, "#         %d:  [%p]  %d\n", i, prom, prom->Info);
 
         prom = prom->Next;
     }
 
-    printf("#     }\n");
-    printf("# }\n");
-    printf("#----------------------------------------------------------\n\n");
+    fprintf(Dump, "#     }\n");
+    fprintf(Dump, "# }\n");
+    fprintf(Dump, "#----------------------------------------------------------\n\n");
+
+    fclose(Dump);
 }

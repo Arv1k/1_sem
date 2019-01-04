@@ -1,0 +1,11 @@
+\documentclass{article}
+
+\title{formula}
+\author{Arv1k}
+
+\begin{document}
+\maketitle
+
+$(2x+1)\frac{1}{x^{2}+x+56}\cos(\ln(x^{2}+x+56))$
+
+\end{document}

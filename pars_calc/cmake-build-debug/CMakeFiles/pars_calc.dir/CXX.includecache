@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/victoroff/CLionProjects/pars_calc/main.cpp
+cstdio
+-
+cassert
+-
+cstdlib
+-
+cstring
+-
+

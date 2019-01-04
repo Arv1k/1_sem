@@ -1,0 +1,3 @@
+/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/CMakeFiles/Akinator_1Love.dir
+/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/CMakeFiles/edit_cache.dir

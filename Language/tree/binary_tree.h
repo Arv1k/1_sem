@@ -39,6 +39,10 @@ enum {
     MODE_EQUAL     = 78,
     MODE_LESS      = 79,
     MODE_NOT_EQUAL = 80,
+    MODE_VARIABLES = 81,
+    MODE_FUNC      = 82,
+    MODE_CALL      = 83,
+    MODE_RETURN    = 84,
 };
 
 const int yad_num = -111;
@@ -51,6 +55,20 @@ struct DatA {
     size_t mode  = yad_mode;
 };
 
+const int yad_position = -777;
+
+struct Var {
+    char* Name = nullptr;
+    int position = yad_position;
+};
+
+const int yad_jumpNum = -888;
+
+struct Call {
+    char* name = nullptr;
+    int jumpNum = yad_jumpNum;
+    int perem[10] = {};
+};
 
 typedef DatA data_t;
 
@@ -147,6 +165,12 @@ void TreeElemsOK(tree_elem* position, int* i);
 tree_elem* TreeSearch(tree_elem* position, data_t elem);
 
 bool is_leaf(tree_elem* position);
+
+int Place_op(tree_elem* position);
+
+int Place_func(tree_elem* position);
+
+int func_search(tree_elem* position);
 
 
 #endif //AKINATOR_1LOVE_TREE_H

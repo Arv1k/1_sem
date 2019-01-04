@@ -1,0 +1,3 @@
+/home/victoroff/CLionProjects/pars_calc/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/victoroff/CLionProjects/pars_calc/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/victoroff/CLionProjects/pars_calc/cmake-build-debug/CMakeFiles/pars_calc.dir

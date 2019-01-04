@@ -1,0 +1,3 @@
+/home/victoroff/CLionProjects/Soft_Processor/Assembler/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/victoroff/CLionProjects/Soft_Processor/Assembler/cmake-build-debug/CMakeFiles/Assembler.dir
+/home/victoroff/CLionProjects/Soft_Processor/Assembler/cmake-build-debug/CMakeFiles/edit_cache.dir

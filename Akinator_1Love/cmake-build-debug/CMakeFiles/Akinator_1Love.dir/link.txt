@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Akinator_1Love.dir/main.cpp.o CMakeFiles/Akinator_1Love.dir/tree/binary_tree.cpp.o CMakeFiles/Akinator_1Love.dir/akinator.cpp.o  -o Akinator_1Love 

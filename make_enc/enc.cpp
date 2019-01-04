@@ -66,7 +66,7 @@ char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings) {
 
     Buffer[NumSymbols] = '\0';
 
-    *NumStrings = numberSymbol(Buffer, '\n');
+    if (NumStrings != nullptr) *NumStrings = numberSymbol(Buffer, '\n');
 
     PRINTF("# Exit from Fill_the_Buffer\n");
 

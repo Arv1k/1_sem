@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Differentiator.dir/main.cpp.o CMakeFiles/Differentiator.dir/differ.cpp.o CMakeFiles/Differentiator.dir/tree/binary_tree.cpp.o  -o Differentiator 

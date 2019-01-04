@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/victoroff/CLionProjects/List/list_pointer/list_p.cpp
+list_p.h
+/home/victoroff/CLionProjects/List/list_pointer/list_p.h
+
+/home/victoroff/CLionProjects/List/list_pointer/list_p.h
+cstdio
+-
+cstdlib
+-
+cassert
+-
+cmath
+-
+cstring
+-
+

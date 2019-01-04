@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/victoroff/CLionProjects/Differentiator/com.h
+
+/home/victoroff/CLionProjects/Differentiator/differ.h
+tree/binary_tree.h
+/home/victoroff/CLionProjects/Differentiator/tree/binary_tree.h
+com.h
+/home/victoroff/CLionProjects/Differentiator/com.h
+
+/home/victoroff/CLionProjects/Differentiator/main.cpp
+differ.h
+/home/victoroff/CLionProjects/Differentiator/differ.h
+
+/home/victoroff/CLionProjects/Differentiator/tree/binary_tree.h
+cstdio
+-
+cstdlib
+-
+cassert
+-
+cmath
+-
+cstring
+-
+

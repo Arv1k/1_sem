@@ -3,93 +3,164 @@
 size_t CoUNT = 0;
 char* pc = nullptr;
 
+#define SKIP_EXTRA pc++;\
+                   while (((*pc) == ' ') || ((*pc) == '\n')) pc++;
+
 void makeTree(tree* nameTree, char* buffer) {
     assert_tree(nameTree);
     assert(buffer);
 
-    nameTree->Tamyr = GetG(buffer);
+    nameTree->Tamyr = GetF(buffer);
     nameTree->count = CoUNT;
 
     assert_tree(nameTree);
 }
 
-tree_elem* GetG(char* buff) {
+tree_elem* GetF(char* buff) {
     dassert(buff);
 
     pc = buff;
 
-    tree_elem* val = GetTo();
+    char* tmp = pc;
+    pc = strchr(pc, ' ');
 
-    dassert(pc);
-    pc_assert(pc);
-    return val;
-}
+    (*pc) = '\0';
+    if (strcmp(tmp, "баш") != 0) {
+        printf("Invalid code!!! There isn't \"баш\"!!!\n");
 
-tree_elem* GetTo() {
-    dassert(pc);
-
-    tree_elem* val1 = nullptr;
-
-    int smth = which_To();
-    switch (smth) {
-        case EGER:
-            val1 = GetIf();
-            break;
-
-        case ELE:
-            val1 = GetL();
-            break;
-
-        case OP_TOP:
-            val1 = GetOp();
-            break;
-
-        default:
-            printf("Smth wrong!\n");
-            abort();
+        abort();
     }
 
-    if ( (*pc) == '.') {
-        tree_elem *val3 = (tree_elem *) calloc(1, sizeof(*val1));
+    (*pc) = ' ';
+    pc++;
+    pc_assert((*pc) == '"');
+
+    pc += 3;
+    SKIP_EXTRA;
+
+    pc_assert((*pc) == '-');
+    pc += 5;
+    SKIP_EXTRA;
+
+    tree_elem *val1 = (tree_elem *) calloc(1, sizeof(*val1));
+    CoUNT++;
+
+    (val1->Info).mode = MODE_NAME;
+    (val1->Info).name = strdup("баш");
+
+    tree_elem* val2 = GetG();
+
+    SKIP_EXTRA;
+    pc_assert((*pc) == '-');
+    pc += 5;
+
+    SKIP_EXTRA;
+
+    val1->Left = val2;
+    val2->Parent = val1;
+
+    val1->Right = nullptr;
+
+    while ((*pc) != '\0') {
+        tmp = pc;
+        pc = strchr(pc, ' ');
+
+        (*pc) = '\0';
+
+        tree_elem* val3 = (tree_elem *) calloc(1, sizeof(*val3));
         CoUNT++;
 
-        (val3->Info).mode = MODE_OPERATORR;
+        (val3->Info).mode = MODE_NAME;
+        (val3->Info).name = strdup(tmp);
 
-        val3->Left = val1;
-        val1->Parent = val3;
-
-        return val3;
-    }
-
-    tree_elem* val2 = nullptr;
-
-    while ((*pc) == ',' || (*pc) == '.') {
+        (*pc) = ' ';
         pc++;
+        pc_assert((*pc) == '"');
 
-        if (*pc == '\0') break;
+        pc++;
+        tree_elem* val4 = nullptr;
+        if ((*pc) != '"') {
+            val4 = GetId();
 
-        while (((*pc) == ' ') || ((*pc) == '\n')) pc++;
+            while ((*pc) == ';') {
+                SKIP_EXTRA;
 
-        smth = which_To();
-        switch (smth) {
-            case EGER:
-                val2 = GetIf();
-                break;
+                tree_elem *val5 = GetId();
 
-            case ELE:
-                val2 = GetL();
-                break;
+                tree_elem *val6 = (tree_elem *) calloc(1, sizeof(*val6));
+                CoUNT++;
 
-            case OP_TOP:
-                val2 = GetOp();
-                break;
+                (val6->Info).mode = MODE_VARIABLES;
 
-            default:
-                printf("Smth wrong!\n");
-                abort();
+                tree_elem* tmp1 = val4;
+                val4 = val6;
+                val6 = tmp1;
+
+                val4->Left = val6;
+                val6->Parent = val4;
+
+                val4->Right = val5;
+                val5->Parent = val4;
+            }
         }
 
-        tree_elem *val3 = (tree_elem *) calloc(1, sizeof(*val1));
+        pc_assert((*pc) == '"');
+        pc++;
+
+        pc_assert((*pc) == ':');
+
+        SKIP_EXTRA;
+
+        pc_assert((*pc) == '-');
+        pc += 5;
+
+        SKIP_EXTRA;
+
+        val3->Right = val4;
+        if (val4 != nullptr) val4->Parent = val3;
+
+        tree_elem* val7 = GetG();
+
+        SKIP_EXTRA;
+        pc_assert((*pc) == '-');
+        pc += 5;
+
+        SKIP_EXTRA;
+
+        val3->Left = val7;
+        val7->Parent = val3;
+
+        tree_elem* val8 = (tree_elem*) calloc(1, sizeof(*val8));
+        CoUNT++;
+
+        (val8->Info).mode = MODE_FUNC;
+
+        tree_elem* tmp2 = val1;
+        val1 = val8;
+        val8 = tmp2;
+
+        val1->Left = val8;
+        val8->Parent = val1;
+
+        val1->Right = val3;
+        val3->Parent = val1;
+    }
+
+    pc_assert(*(pc) == '\0')
+    return val1;
+}
+
+tree_elem* GetG() {
+    dassert(pc);
+
+    tree_elem* val1 = GetTo();
+
+    while ((*pc) == ',') {
+        SKIP_EXTRA;
+
+        tree_elem* val2 = GetTo();
+
+        tree_elem *val3 = (tree_elem *) calloc(1, sizeof(*val3));
         CoUNT++;
 
         (val3->Info).mode = MODE_OPERATORR;
@@ -105,10 +176,38 @@ tree_elem* GetTo() {
         val3->Parent = val1;
     }
 
+    dassert(pc);
+    pc_assert((*pc) == '.');
+    return val1;
+}
+
+tree_elem* GetTo() {
+    dassert(pc);
+
+    tree_elem* val = nullptr;
+
+    int smth = which_To();
+    switch (smth) {
+        case EGER:
+            val = GetIf();
+            break;
+
+        case ELE:
+            val = GetL();
+            break;
+
+        case OP_TOP:
+            val = GetA();
+            break;
+
+        default:
+            printf("Smth wrong!\n");
+            abort();
+    }
 
     dassert(pc);
-    pc_assert((*pc) == '\n' || (*pc) == '\0');
-    return val1;
+    pc_assert((*pc) == '.' || (*pc) == ',');
+    return val;
 }
 
 tree_elem* GetL() {
@@ -119,10 +218,52 @@ tree_elem* GetL() {
     pc_assert((*pc) == '"');
 
     pc++;
-    pc_assert((*pc) == ':');
 
-    pc++;
-    while (((*pc) == ' ') || ((*pc) == '\n')) pc++;
+    if ((*pc) == ':') {
+        SKIP_EXTRA;
+
+        tree_elem* val2 = GetTo();
+
+        while ((*pc) != '.') {
+            SKIP_EXTRA;
+
+            tree_elem *val4 = GetTo();
+
+            tree_elem* val5 = (tree_elem *) calloc(1, sizeof(*val1));
+            CoUNT++;
+
+            (val5->Info).mode = MODE_OPERATORR;
+
+            tree_elem* tmp = val2;
+            val2 = val5;
+            val5 = tmp;
+
+            val2->Right = val4;
+            val4->Parent = val2;
+
+            val2->Left = val5;
+            val5->Parent = val2;
+        }
+
+        pc_assert((*pc) == '.');
+        pc++;
+
+        tree_elem* val3 = (tree_elem *) calloc(1, sizeof(*val1));
+        CoUNT++;
+
+        (val3->Info).mode = MODE_LOOP;
+
+        val3->Left = val1;
+        val1->Parent = val3;
+
+        val3->Right = val2;
+        val2->Parent = val3;
+
+        dassert(pc);
+        return val3;
+    }
+
+    SKIP_EXTRA;
 
     tree_elem* val2 = GetTo();
 
@@ -137,6 +278,7 @@ tree_elem* GetL() {
     val3->Right = val2;
     val2->Parent = val3;
 
+    pc_assert((*pc) == ',' || (*pc) == '.');
     dassert(pc);
     return val3;
 }
@@ -149,10 +291,52 @@ tree_elem* GetIf() {
     pc_assert((*pc) == '"');
 
     pc++;
-    pc_assert((*pc) == ':');
 
-    pc++;
-    while (((*pc) == ' ') || ((*pc) == '\n')) pc++;
+    if ((*pc) == ':') {
+        SKIP_EXTRA;
+
+        tree_elem* val2 = GetTo();
+
+        while ((*pc) != '.') {
+            SKIP_EXTRA;
+
+            tree_elem *val4 = GetTo();
+
+            tree_elem* val5 = (tree_elem *) calloc(1, sizeof(*val1));
+            CoUNT++;
+
+            (val5->Info).mode = MODE_OPERATORR;
+
+            tree_elem* tmp = val2;
+            val2 = val5;
+            val5 = tmp;
+
+            val2->Right = val4;
+            val4->Parent = val2;
+
+            val2->Left = val5;
+            val5->Parent = val2;
+        }
+
+        pc_assert((*pc) == '.');
+        pc++;
+
+        tree_elem* val3 = (tree_elem *) calloc(1, sizeof(*val1));
+        CoUNT++;
+
+        (val3->Info).mode = MODE_IF;
+
+        val3->Left = val1;
+        val1->Parent = val3;
+
+        val3->Right = val2;
+        val2->Parent = val3;
+
+        dassert(pc);
+        return val3;
+    }
+
+    SKIP_EXTRA;
 
     tree_elem* val2 = GetTo();
 
@@ -167,41 +351,9 @@ tree_elem* GetIf() {
     val3->Right = val2;
     val2->Parent = val3;
 
+    pc_assert((*pc) == ',' || (*pc) == '.');
     dassert(pc);
     return val3;
-}
-
-tree_elem* GetOp() {
-    dassert(pc);
-
-    tree_elem* val1 = GetA();
-
-    /*while((*pc) == ',') {
-        pc++;
-        while (((*pc) == ' ') || ((*pc) == '\n')) pc++;
-
-        tree_elem* val2 = GetTo();
-
-        tree_elem* val3 = (tree_elem*) calloc(1, sizeof(*val3));
-        CoUNT++;
-
-        (val3->Info).mode = MODE_OPERATORR;
-
-        tree_elem* tmp = val1;
-        val1 = val3;
-        val3 = tmp;
-
-        val1->Right = val2;
-        val2->Parent = val1;
-
-        val1->Left = val3;
-        val3->Parent = val1;
-    }*/
-
-    pc_assert(((*pc) == '.') || ((*pc) == ',') );
-
-    dassert(pc);
-    return val1;
 }
 
 tree_elem* GetA() {
@@ -210,35 +362,81 @@ tree_elem* GetA() {
     tree_elem* val1 = nullptr;
 
     if ((*pc) == '"') {
+        SKIP_EXTRA;
+
         val1 = GetE();
 
         pc_assert((*pc) == '"');
 
-        pc++;
-        while (((*pc) == ' ') || ((*pc) == '\n')) pc++;
+        SKIP_EXTRA;
 
-        if(which_A() == KURSET) {
-            tree_elem* val2 = (tree_elem*) calloc(1, sizeof(*val2));
-            CoUNT++;
+        tree_elem* val2 = (tree_elem*) calloc(1, sizeof(*val2));
+        CoUNT++;
 
-            (val2->Info).mode = MODE_OUT;
+        if(which_A() == KURSET)   (val2->Info).mode = MODE_OUT;
 
-            val2->Left = val1;
-            val1->Parent = val2;
+        else if(which_A() == BIR) (val2->Info).mode = MODE_RETURN;
 
-            val2->Right = nullptr;
+        else                      abort();
 
-            dassert(pc);
-            return val2;
-        }
+        val2->Left = val1;
+        val1->Parent = val2;
 
-        else abort();
+        val2->Right = nullptr;
+
+        dassert(pc);
+        return val2;
     }
+
 
     else val1 = GetId();
 
     tree_elem* val2 = (tree_elem*) calloc(1, sizeof(*val2));
     CoUNT++;
+
+    if ((*pc) == '"') {
+        pc++;
+
+        tree_elem* val4 = nullptr;
+        if ((*pc) != '"') {
+            val4 = GetId();
+
+            while ((*pc) == ';') {
+                SKIP_EXTRA;
+
+                tree_elem *val5 = GetId();
+
+                tree_elem *val6 = (tree_elem *) calloc(1, sizeof(*val6));
+                CoUNT++;
+
+                (val6->Info).mode = MODE_VARIABLES;
+
+                tree_elem* tmp1 = val4;
+                val4 = val6;
+                val6 = tmp1;
+
+                val4->Left = val6;
+                val6->Parent = val4;
+
+                val4->Right = val5;
+                val5->Parent = val4;
+            }
+        }
+
+        pc_assert((*pc) == '"');
+
+        SKIP_EXTRA;
+
+        (val2->Info).mode = MODE_CALL;
+
+        val2->Left = val1;
+        val1->Parent = val2;
+
+        val2->Right = val4;
+        if (val4 != nullptr) val4->Parent = val2;
+
+        return val2;
+    }
 
     tree_elem* val3 = nullptr;
     switch (which_A()) {
@@ -263,10 +461,15 @@ tree_elem* GetA() {
             val2->Right = val3;
             val1->Parent = val3;
 
+            dassert(pc);
             return val2;
 
         case KURSET:
             (val2->Info).mode = MODE_OUT;
+            break;
+
+        case BIR:
+            (val2->Info).mode = MODE_RETURN;
             break;
 
         default:
@@ -277,6 +480,8 @@ tree_elem* GetA() {
     val1->Parent = val2;
 
     val2->Right = nullptr;
+
+    pc_assert(((*pc) == '.') || ((*pc) == ',') );
 
     dassert(pc);
     return val2;
@@ -321,8 +526,7 @@ tree_elem* GetE() {
     while(*pc == '+' || *pc == '-') {
         char op = (*pc);
 
-        pc++;
-        while ((*pc) == ' ') pc++;
+        SKIP_EXTRA;
 
         tree_elem* val2 = GetT();
 
@@ -355,8 +559,7 @@ tree_elem* GetT() {
     while(*pc == '*' || *pc == '/') {
         char op = (*pc);
 
-        pc++;
-        while ((*pc) == ' ') pc++;
+        SKIP_EXTRA;
 
         tree_elem* val2 = GetP();
 
@@ -387,14 +590,12 @@ tree_elem* GetP() {
     tree_elem* val = nullptr;
 
     if (*pc == '(') {
-        pc++;
-        while ((*pc) == ' ') pc++;
+        SKIP_EXTRA;
 
         val = GetE();
         assert(*pc == ')');
 
-        pc++;
-        while ((*pc) == ' ') pc++;
+        SKIP_EXTRA;
 
         dassert(pc);
         return val;
@@ -497,7 +698,7 @@ tree_elem* GetId() {
         abort();
     }
 
-    while ((*pc) == ' ' || (*pc) == '\n') pc++;
+    while ((*pc) == ' ') pc++;
 
     dassert(pc);
     return val;
@@ -533,6 +734,13 @@ int which_To() {
 
     char* tmp = pc;
     pc = strchr(pc, ' ');
+    if (!pc) {
+        pc = tmp;
+
+        dassert(pc);
+        return OP_TOP;
+    }
+
     (*pc) = '\0';
 
     if (strcmp(tmp, "әле") == 0) {
@@ -540,6 +748,7 @@ int which_To() {
 
         pc += 2;
 
+        dassert(pc);
         return ELE;
     }
 
@@ -548,6 +757,7 @@ int which_To() {
 
         pc += 2;
 
+        dassert(pc);
         return EGER;
     }
 
@@ -557,6 +767,7 @@ int which_To() {
         pc = tmp;
         while (((*pc) == ' ') || ((*pc) == '\n')) pc++;
 
+        dassert(pc);
         return OP_TOP;
     }
 }
@@ -573,25 +784,36 @@ int which_A() {
     if (strcmp(tmp, "бу") == 0) {
         (*pc) = tmp1;
 
+        dassert(pc);
         return BU;
     }
 
     else if (strcmp(tmp, "туды") == 0) {
         (*pc) = tmp1;
 
+        dassert(pc);
         return TUDY;
     }
 
     if (strcmp(tmp, "әйт") == 0) {
         (*pc) = tmp1;
 
+        dassert(pc);
         return EIT;
     }
 
-    else if (strcmp(tmp, "күрсәт") == 0) {
+    if (strcmp(tmp, "күрсәт") == 0) {
         (*pc) = tmp1;
 
+        dassert(pc);
         return KURSET;
+    }
+
+    else if (strcmp(tmp, "бир") == 0) {
+        (*pc) = tmp1;
+
+        dassert(pc);
+        return BIR;
     }
 }
 
@@ -659,92 +881,119 @@ void print_mode(tree_elem* pos, FILE* dot_out) {
     assert(dot_out);
 
     switch ((pos->Info).mode) {
-        case MODE_OP:     fprintf(dot_out, "[label = \"%s\", shape = \"Mcircle\", "
-                                           "color=\"#006400\", style=\"filled\", "
-                                           "fillcolor = \"#32CD32\"]", (pos->Info).name);
-            break;
+        case MODE_OP:        fprintf(dot_out, "[label = \"%s\", shape = \"Mcircle\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#32CD32\"]", (pos->Info).name);
+                             break;
 
-        case MODE_SIGN:   fprintf(dot_out, "[label = \"%c\", shape = \"diamond\", "
-                                           "color=\"#FFD700\", style=\"filled\", "
-                                           "fillcolor = \"#F0E68C\"]", (pos->Info).number);
-            break;
+        case MODE_SIGN:      fprintf(dot_out, "[label = \"%c\", shape = \"diamond\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#F0E68C\"]", (pos->Info).number);
+                             break;
 
-        case MODE_VAR:    fprintf(dot_out, "[label = \"%s\", shape = \"component\", "
-                                           "color=\"#8B008B\", style=\"filled\", "
-                                           "fillcolor = \"#9932CC\"]", (pos->Info).name);
-            break;
+        case MODE_VAR:       fprintf(dot_out, "[label = \"%s\", shape = \"component\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#9932CC\"]", (pos->Info).name);
+                             break;
 
-        case MODE_NUMBER: fprintf(dot_out, "[label = \"%d\", shape = \"Msquare\", "
-                                           "color=\"#8B0000\", style=\"filled\", "
-                                           "fillcolor = \"#FFA07A\"]", (pos->Info).number);
-            break;
+        case MODE_NUMBER:    fprintf(dot_out, "[label = \"%d\", shape = \"Msquare\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#FFA07A\"]", (pos->Info).number);
+                             break;
 
-        case MODE_NAME:     fprintf(dot_out, "[label = \"%s\", shape = \"invtriangle\", "
-                                           "color=\"#000000\", style=\"filled\", "
-                                           "fillcolor = \"#00FFFF\"]", (pos->Info).name);
-            break;
+        case MODE_NAME:      fprintf(dot_out, "[label = \"%s\", shape = \"invtriangle\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#00FFFF\"]", (pos->Info).name);
+                             break;
 
         case MODE_OPERATORR: fprintf(dot_out, "[label = \"operator\", shape = \"egg\", "
-                                           "color=\"#000000\", style=\"filled\", "
-                                           "fillcolor = \"#FFFFFF\"]");
-            break;
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#FFFFFF\"]");
+                             break;
 
-        case MODE_LOOP:     fprintf(dot_out, "[label = \"loop\", shape = \"house\", "
-                                           "color=\"#000000\", style=\"filled\", "
-                                           "fillcolor = \"#D2691E\"]");
-            break;
+        case MODE_LOOP:      fprintf(dot_out, "[label = \"loop\", shape = \"house\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#D2691E\"]");
+                             break;
 
-        case MODE_IF:     fprintf(dot_out, "[label = \"if\", shape = \"house\", "
-                                           "color=\"#000000\", style=\"filled\", "
-                                           "fillcolor = \"#800000\"]");
-            break;
+        case MODE_IF:        fprintf(dot_out, "[label = \"if\", shape = \"house\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#800000\"]");
+                             break;
 
-        case MODE_OUT:     fprintf(dot_out, "[label = \"out\", shape = \"box3d\", "
-                                           "color=\"#000000\", style=\"filled\", "
-                                           "fillcolor = \"#32CD32\"]");
-            break;
+        case MODE_OUT:       fprintf(dot_out, "[label = \"out\", shape = \"box3d\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#32CD32\"]");
+                             break;
 
-        case MODE_IN:     fprintf(dot_out, "[label = \"in\", shape = \"box3d\", "
-                                           "color=\"#000000\", style=\"filled\", "
-                                           "fillcolor = \"#FFDEAD\"]");
-            break;
+        case MODE_IN:        fprintf(dot_out, "[label = \"in\", shape = \"box3d\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#FFDEAD\"]");
+                             break;
 
-        case MODE_ASSIGN:     fprintf(dot_out, "[label = \"=\", shape = \"box3d\", "
-                                           "color=\"#000000\", style=\"filled\", "
-                                           "fillcolor = \"#708090\"]");
-            break;
+        case MODE_ASSIGN:    fprintf(dot_out, "[label = \"=\", shape = \"box3d\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#708090\"]");
+                             break;
 
-        case MODE_BORN:     fprintf(dot_out, "[label = \"born\", shape = \"box3d\", "
-                                               "color=\"#000000\", style=\"filled\", "
-                                               "fillcolor = \"#EE82EE\"]");
-            break;
+        case MODE_BORN:      fprintf(dot_out, "[label = \"born\", shape = \"box3d\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#EE82EE\"]");
+                             break;
 
-        case MODE_BIGGER:     fprintf(dot_out, "[label = \">\", shape = \"parallelogram\", "
-                                             "color=\"#000000\", style=\"filled\", "
-                                             "fillcolor = \"#006400\"]");
-            break;
+        case MODE_BIGGER:    fprintf(dot_out, "[label = \">\", shape = \"parallelogram\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#006400\"]");
+                             break;
 
         case MODE_EQUAL:     fprintf(dot_out, "[label = \"==\", shape = \"parallelogram\", "
                                                "color=\"#000000\", style=\"filled\", "
                                                "fillcolor = \"#FF7F50\"]");
-            break;
+                             break;
 
-        case MODE_LESS:     fprintf(dot_out, "[label = \"<\", shape = \"parallelogram\", "
-                                               "color=\"#000000\", style=\"filled\", "
-                                               "fillcolor = \"#FFE4B5\"]");
-            break;
+        case MODE_LESS:      fprintf(dot_out, "[label = \"<\", shape = \"parallelogram\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#FFE4B5\"]");
+                             break;
 
-        case MODE_NOT_EQUAL:     fprintf(dot_out, "[label = \"!=\", shape = \"parallelogram\", "
-                                               "color=\"#000000\", style=\"filled\", "
-                                               "fillcolor = \"#FF4500\"]");
-            break;
+        case MODE_NOT_EQUAL: fprintf(dot_out, "[label = \"!=\", shape = \"parallelogram\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#FF4500\"]");
+                             break;
 
-        default:          fprintf(dot_out, "\"error\"");
-            break;
+        case MODE_VARIABLES: fprintf(dot_out, "[label = \"variable\", shape = \"egg\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#FFFFFF\"]");
+                             break;
+
+        case MODE_FUNC:      fprintf(dot_out, "[label = \"function\", shape = \"egg\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#FFFFFF\"]");
+                             break;
+
+        case MODE_CALL:      fprintf(dot_out, "[label = \"call\", shape = \"egg\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#FFFFFF\"]");
+                             break;
+
+        case MODE_RETURN:    fprintf(dot_out, "[label = \"return\", shape = \"box3d\", "
+                                              "color=\"#000000\", style=\"filled\", "
+                                              "fillcolor = \"#F5C32F\"]");
+                             break;
+
+        default:             fprintf(dot_out, "\"error\"");
+                             break;
     }
 
     assert(pos);
     assert(dot_out);
 }
 
+void compile() {
+    system("cp asm_out ../Soft_Processor/inFile");
+    system("g++ ../Soft_Processor/Assembler/main.cpp ../Soft_Processor/Assembler/assembler.cpp ../Soft_Processor/Assembler/enc_dir/enc.cpp");
+    system("./a.out ../Soft_Processor/inFile ../Soft_Processor/outFile");
+    system("g++ ../Soft_Processor/CPU/main.cpp ../Soft_Processor/CPU/cpu.cpp ../Soft_Processor/CPU/stack_dir/stack.cpp");
+    system("./a.out ../Soft_Processor/outFile");
+}
 

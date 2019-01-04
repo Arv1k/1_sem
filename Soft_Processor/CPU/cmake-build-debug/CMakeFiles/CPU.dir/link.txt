@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/CPU.dir/main.cpp.o CMakeFiles/CPU.dir/cpu.cpp.o CMakeFiles/CPU.dir/stack_dir/stack.cpp.o  -o CPU 

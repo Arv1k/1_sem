@@ -46,29 +46,30 @@ enum {
     EIT    = 101,
     TUDY   = 102,
     BU     = 103,
+    BIR    = 104,
 };
 
 void makeTree(tree* nameTree, char* buffer);
 
-//G ::= To'\0'
-tree_elem* GetG(char* buff);
+// F ::= баш "" '\n'-----'\n' G '\n'-----'\n' {Id "{Id;}+" '\n'-----'\n' G '\n'-----'\n'}*
+tree_elem* GetF(char* buff);
 
-// To ::= {L | Op | If}+
+// G ::= {To','}* {To'.'}\0'
+tree_elem* GetG();
+
+// To ::= L | A | If
 tree_elem* GetTo();
 
-// L ::= әле "C" To
+// L ::= әле "C": {To','}+ {To'.'} | әле "C" To
 tree_elem* GetL();
 
-// If ::= әгәр "C" To
+// If ::= әгәр "C": {To','}* {To'.'} | әгәр "C" To
 tree_elem* GetIf();
 
-// Op ::= A[,.]
-tree_elem* GetOp();
-
-// A ::= Id бу E | Id туды | Id әйт | "E" күрсәт
+// A ::= Id бу E | Id туды | Id әйт | "E" күрсәт | Id "{Id; }*" | {"E" бир | Id бир}
 tree_elem* GetA();
 
-// C ::= E E [зуррак | кечкенәрәк | тигез | түгeл]
+// C ::= {(E) | N} {(E) | N} [зуррак | кечкенәрәк | тигез | түгeл]
 tree_elem* GetC();
 
 // E ::= T{[+-]T}*
@@ -80,7 +81,7 @@ tree_elem* GetT();
 // P ::= (E) | sin(E) | cos(E) | ln(E) | lg(E) | N | Id
 tree_elem* GetP();
 
-// N ::= [0-9]{[0-9]}*
+// N ::= [0-9]{[0-9]}* | Id
 tree_elem* GetN();
 
 // Id ::= [a-z & A-Z]{[a-z & A-Z]}*
@@ -98,5 +99,8 @@ void tree_dot(tree* nameTree, char* dot_out);
 void create_tree(tree_elem* pos, FILE* dot_out);
 
 void print_mode(tree_elem* pos, FILE* dot_out);
+
+void compile();
+
 
 #endif //LANGUAGE_LANGUAGE_H

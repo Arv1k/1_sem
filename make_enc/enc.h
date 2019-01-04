@@ -52,7 +52,7 @@ str* Fill_the_Addresses(const char* nameInput);
 //! Very imortant to put '\0' in the end of Buffer for working with it.
 //----------------------------------------------------------------------------------------------------------------------
 
-char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings);
+char* Fill_the_Buffer(const char* nameInput, unsigned int* NumStrings = nullptr);
 
 //----------------------------------------------------------------------------------------------------------------------
 //! Size\n\n

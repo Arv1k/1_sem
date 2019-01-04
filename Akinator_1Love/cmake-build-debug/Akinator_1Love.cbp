@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Akinator_1Love"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Akinator_1Love">
+				<Option output="/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Akinator_1Love" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 Akinator_1Love"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Akinator_1Love/fast">
+				<Option output="/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Akinator_1Love" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 Akinator_1Love/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/victoroff/CLionProjects/Akinator_1Love/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/victoroff/CLionProjects/Akinator_1Love/akinator.cpp">
+			<Option target="Akinator_1Love"/>
+		</Unit>
+		<Unit filename="/home/victoroff/CLionProjects/Akinator_1Love/akinator.h">
+			<Option target="Akinator_1Love"/>
+		</Unit>
+		<Unit filename="/home/victoroff/CLionProjects/Akinator_1Love/main.cpp">
+			<Option target="Akinator_1Love"/>
+		</Unit>
+		<Unit filename="/home/victoroff/CLionProjects/Akinator_1Love/tree/binary_tree.cpp">
+			<Option target="Akinator_1Love"/>
+		</Unit>
+		<Unit filename="/home/victoroff/CLionProjects/Akinator_1Love/tree/binary_tree.h">
+			<Option target="Akinator_1Love"/>
+		</Unit>
+		<Unit filename="/home/victoroff/CLionProjects/Akinator_1Love/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/pars_calc.dir/main.cpp.o  -o pars_calc 
