@@ -5,13 +5,13 @@ void Sorter(const char* nameInput, const char* nameOutput) {
 
     char* CP_Addresses_of_Strings = Addresses[0].String;
 
-    Fill_the_OutputFile(Addresses, nameOutput);
+    //Fill_the_OutputFile(Addresses, nameOutput);
 
     Sort_the_Addresses_from_the_end(Addresses);
     Fill_the_OutputFile(Addresses, nameOutput);
 
-    Sort_the_Addresses(Addresses);
-    Fill_the_OutputFile(Addresses, nameOutput);
+    //Sort_the_Addresses(Addresses);
+    //Fill_the_OutputFile(Addresses, nameOutput);
 
     cleanMemory(Addresses, &CP_Addresses_of_Strings);
 }

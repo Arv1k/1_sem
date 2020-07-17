@@ -6,23 +6,33 @@
 
 #IncludeRegexTransform: 
 
-/home/victoroff/CLionProjects/Language/com.h
+/home/arv1k/CLionProjects/1_sem/Language/com.h
 
-/home/victoroff/CLionProjects/Language/language.h
-cstdio
-/home/victoroff/CLionProjects/Language/cstdio
-../make_enc/enc.h
-/home/victoroff/CLionProjects/make_enc/enc.h
-tree/binary_tree.h
-/home/victoroff/CLionProjects/Language/tree/binary_tree.h
-com.h
-/home/victoroff/CLionProjects/Language/com.h
-
-/home/victoroff/CLionProjects/Language/main.cpp
+/home/arv1k/CLionProjects/1_sem/Language/language.cpp
 language.h
-/home/victoroff/CLionProjects/Language/language.h
+/home/arv1k/CLionProjects/1_sem/Language/language.h
+com.h
+/home/arv1k/CLionProjects/1_sem/Language/com.h
 
-/home/victoroff/CLionProjects/Language/tree/binary_tree.h
+/home/arv1k/CLionProjects/1_sem/Language/language.h
+cstdio
+/home/arv1k/CLionProjects/1_sem/Language/cstdio
+../make_enc/enc.h
+/home/arv1k/CLionProjects/1_sem/make_enc/enc.h
+tree/binary_tree.h
+/home/arv1k/CLionProjects/1_sem/Language/tree/binary_tree.h
+com.h
+/home/arv1k/CLionProjects/1_sem/Language/com.h
+
+/home/arv1k/CLionProjects/1_sem/Language/main.cpp
+language.h
+/home/arv1k/CLionProjects/1_sem/Language/language.h
+
+/home/arv1k/CLionProjects/1_sem/Language/tree/binary_tree.cpp
+binary_tree.h
+/home/arv1k/CLionProjects/1_sem/Language/tree/binary_tree.h
+
+/home/arv1k/CLionProjects/1_sem/Language/tree/binary_tree.h
 cstdio
 -
 cstdlib
@@ -34,7 +44,11 @@ cmath
 cstring
 -
 
-/home/victoroff/CLionProjects/make_enc/enc.h
+/home/arv1k/CLionProjects/1_sem/make_enc/enc.cpp
+enc.h
+/home/arv1k/CLionProjects/1_sem/make_enc/enc.h
+
+/home/arv1k/CLionProjects/1_sem/make_enc/enc.h
 cstdio
 -
 cstring

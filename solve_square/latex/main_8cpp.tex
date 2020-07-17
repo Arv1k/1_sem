@@ -1,0 +1,102 @@
+\hypertarget{main_8cpp}{}\section{main.\+cpp File Reference}
+\label{main_8cpp}\index{main.\+cpp@{main.\+cpp}}
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+Include dependency graph for main.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_a4520c2ed182d09cbb809b71c9226a77f}\label{main_8cpp_a4520c2ed182d09cbb809b71c9226a77f}} 
+\#define {\bfseries M\+E\+OW}
+\item 
+\mbox{\Hypertarget{main_8cpp_ae1649fc947ca37a86917a08354f48d1a}\label{main_8cpp_ae1649fc947ca37a86917a08354f48d1a}} 
+\#define {\bfseries P\+R\+I\+N\+TF}~printf
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{main_8cpp_ab2dd9b24e0e487efdd1cd1f40dd3a023}{Solve\+Square} (double a, double b, double c, double $\ast$x1, double $\ast$x2)
+\item 
+int \hyperlink{main_8cpp_aaabeeccf3691fb6a0e4b27370dc0ea93}{Linear} (double b, double c, double $\ast$x1)
+\item 
+int \hyperlink{main_8cpp_a9754b33474b4929519aac545e6661ed5}{Quadratic} (double a, double b, double c, double $\ast$x1, double $\ast$x2)
+\item 
+int \hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8cpp_a61fe66f8a8a77050d213dfe9f8df6232}\label{main_8cpp_a61fe66f8a8a77050d213dfe9f8df6232}} 
+const int {\bfseries Inf\+Roots} = -\/1
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_aaabeeccf3691fb6a0e4b27370dc0ea93}\label{main_8cpp_aaabeeccf3691fb6a0e4b27370dc0ea93}} 
+\index{main.\+cpp@{main.\+cpp}!Linear@{Linear}}
+\index{Linear@{Linear}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{Linear()}{Linear()}}
+{\footnotesize\ttfamily int Linear (\begin{DoxyParamCaption}\item[{double}]{b,  }\item[{double}]{c,  }\item[{double $\ast$}]{x1 }\end{DoxyParamCaption})}
+
+Linear -\/ auxiliary function if a = 0 (b$\ast$x + c = 0) 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em b} & -\/ coefficient. \\
+\hline
+\mbox{\tt in}  & {\em c} & -\/ coefficient. \\
+\hline
+\mbox{\tt out}  & {\em x1} & -\/ the root. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.\+cpp@{main.\+cpp}!main@{main}}
+\index{main@{main}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+In main function we have conditions because of number of roots can be different. In fact, Solve\+Square solves how many roots we have \mbox{\Hypertarget{main_8cpp_a9754b33474b4929519aac545e6661ed5}\label{main_8cpp_a9754b33474b4929519aac545e6661ed5}} 
+\index{main.\+cpp@{main.\+cpp}!Quadratic@{Quadratic}}
+\index{Quadratic@{Quadratic}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{Quadratic()}{Quadratic()}}
+{\footnotesize\ttfamily int Quadratic (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{double}]{c,  }\item[{double $\ast$}]{x1,  }\item[{double $\ast$}]{x2 }\end{DoxyParamCaption})}
+
+Quadratic -\/ auxiliary function if a != 0 (a$\ast$x$^\wedge$2 + b$\ast$x + c = 0) 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em a} & -\/ coefficient. \\
+\hline
+\mbox{\tt in}  & {\em b} & -\/ coefficient. \\
+\hline
+\mbox{\tt in}  & {\em c} & -\/ coefficient. \\
+\hline
+\mbox{\tt out}  & {\em x1} & -\/ one of the root. \\
+\hline
+\mbox{\tt out}  & {\em x2} & -\/ one of the root. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8cpp_ab2dd9b24e0e487efdd1cd1f40dd3a023}\label{main_8cpp_ab2dd9b24e0e487efdd1cd1f40dd3a023}} 
+\index{main.\+cpp@{main.\+cpp}!Solve\+Square@{Solve\+Square}}
+\index{Solve\+Square@{Solve\+Square}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{Solve\+Square()}{SolveSquare()}}
+{\footnotesize\ttfamily int Solve\+Square (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b,  }\item[{double}]{c,  }\item[{double $\ast$}]{x1,  }\item[{double $\ast$}]{x2 }\end{DoxyParamCaption})}
+
+Solve\+Square -\/ function for solving the equation 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em a} & -\/ coefficient. \\
+\hline
+\mbox{\tt in}  & {\em b} & -\/ coefficient. \\
+\hline
+\mbox{\tt in}  & {\em c} & -\/ coefficient. \\
+\hline
+\mbox{\tt out}  & {\em x1} & -\/ one of the root. \\
+\hline
+\mbox{\tt out}  & {\em x2} & -\/ one of the root. \\
+\hline
+\end{DoxyParams}

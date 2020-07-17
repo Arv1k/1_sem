@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/list_pointer.dir/main.cpp.o CMakeFiles/list_pointer.dir/list_c.cpp.o  -o list_pointer 

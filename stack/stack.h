@@ -72,7 +72,7 @@ struct Stack {
     data_t* Data = nullptr;
     size_t  Size = Poison;
     size_t  Capacity = Poison;
-    data_t hash_sum = Poison;
+    data_t  hash_sum = Poison;
 
     size_t petuh2 = petuhValue1;
 };

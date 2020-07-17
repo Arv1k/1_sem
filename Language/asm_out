@@ -1,28 +1,100 @@
 in
 pop [0]
-push 1
+in
 pop [1]
-call :0
-push [1]
-out
-end
-
-
-:0
+in
+pop [2]
+push 34
+pop [4]
 push [0]
 push 0
-jrc :1
+jrc :0
 push [1]
-pop rax
-ret
+push 0
+jrc :0
+push [2]
+push 0
+jrc :0
+push 999
+pop [3]
+:0
+push [2]
+push 0
+jc :1
+push 0
+push 999
+sub
+pop [3]
 :1
+:2
 push [1]
+push 0
+jc :3
+push 0
+push [1]
+push [2]
+div
+sub
+pop [3]
+:3
+:4
+push [0]
+push 0
+jc :5
+push [1]
+push [1]
+mul
+push 4
 push [0]
 mul
-pop [1]
-push [0]
-push 1
+push [2]
+mul
 sub
-pop [0]
-call :0
-ret
+sqrt
+pop [5]
+push 0
+push [1]
+sub
+push [5]
+sub
+push 2
+push [0]
+mul
+div
+pop [3]
+push 0
+push [1]
+sub
+push [5]
+add
+push 2
+push [0]
+mul
+div
+pop [4]
+:5
+push [3]
+push [4]
+jrc :6
+push [3]
+out
+:6
+push [3]
+push [4]
+jc :7
+push [4]
+push 34
+jrc :7
+push [3]
+out
+:7
+push [4]
+push 34
+jc :8
+push [3]
+out
+push [4]
+out
+:8
+:9
+end

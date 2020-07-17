@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/arv1k/CLionProjects/1_sem/List/list_class/list_c.cpp
+list_c.h
+/home/arv1k/CLionProjects/1_sem/List/list_class/list_c.h
+
+/home/arv1k/CLionProjects/1_sem/List/list_class/list_c.h
+cstdio
+-
+cstdlib
+-
+cassert
+-
+cmath
+-
+cstring
+-
+fstream
+-
+
+/home/arv1k/CLionProjects/1_sem/List/list_class/main.cpp
+list_c.h
+/home/arv1k/CLionProjects/1_sem/List/list_class/list_c.h
+

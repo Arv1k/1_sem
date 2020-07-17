@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/victoroff/CLionProjects/make_enc/enc.cpp" "/home/victoroff/CLionProjects/Language/cmake-build-debug/CMakeFiles/Language.dir/home/victoroff/CLionProjects/make_enc/enc.cpp.o"
-  "/home/victoroff/CLionProjects/Language/language.cpp" "/home/victoroff/CLionProjects/Language/cmake-build-debug/CMakeFiles/Language.dir/language.cpp.o"
-  "/home/victoroff/CLionProjects/Language/main.cpp" "/home/victoroff/CLionProjects/Language/cmake-build-debug/CMakeFiles/Language.dir/main.cpp.o"
-  "/home/victoroff/CLionProjects/Language/tree/binary_tree.cpp" "/home/victoroff/CLionProjects/Language/cmake-build-debug/CMakeFiles/Language.dir/tree/binary_tree.cpp.o"
+  "/home/arv1k/CLionProjects/1_sem/make_enc/enc.cpp" "/home/arv1k/CLionProjects/1_sem/Language/cmake-build-debug/CMakeFiles/Language.dir/home/arv1k/CLionProjects/1_sem/make_enc/enc.cpp.o"
+  "/home/arv1k/CLionProjects/1_sem/Language/language.cpp" "/home/arv1k/CLionProjects/1_sem/Language/cmake-build-debug/CMakeFiles/Language.dir/language.cpp.o"
+  "/home/arv1k/CLionProjects/1_sem/Language/main.cpp" "/home/arv1k/CLionProjects/1_sem/Language/cmake-build-debug/CMakeFiles/Language.dir/main.cpp.o"
+  "/home/arv1k/CLionProjects/1_sem/Language/tree/binary_tree.cpp" "/home/arv1k/CLionProjects/1_sem/Language/cmake-build-debug/CMakeFiles/Language.dir/tree/binary_tree.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
